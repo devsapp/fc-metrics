@@ -1,0 +1,1 @@
+{"version":3,"file":"app.js","sourceRoot":"","sources":["../../../src/ui/src/app.tsx"],"names":[],"mappings":";;;;;AAAA,kDAA0B;AAC1B,gGAAqD;AACrD,iEAAyC;AACzC,uEAA+C;AAE/C,uCAAyC;AAEzC,kBAAe,GAAG,EAAE;IAClB,OAAO,CACL,8BAAC,sBAAY;QACX,8BAAC,iCAAI;YACH,8BAAC,iCAAI,CAAC,OAAO;gBACX,8BAAC,gBAAM,OAAG;gBACV,8BAAC,mBAAS,OAAG,CACA,CACV,CACM,CAChB,CAAC;AACJ,CAAC,CAAC"}

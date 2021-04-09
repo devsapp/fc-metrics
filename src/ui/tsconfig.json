@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "jsx": "react",
+    "allowJs":true,
+    "esModuleInterop": true,
+    "lib": ["es2015", "dom", "es6"],
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "stripInternal": true,
+    "pretty": false,
+    "declaration": true,
+    "downlevelIteration": true, 
+    "typeRoots": ["./typings", "./node_modules/@types"]
+  }
+}
