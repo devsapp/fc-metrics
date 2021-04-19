@@ -24,28 +24,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@serverless-devs/core");
 const lodash_1 = __importDefault(require("lodash"));
 const constant_1 = require("./constant");
-const interface_1 = require("./interface");
 const metrics_1 = __importDefault(require("./utils/metrics"));
 const client_1 = require("./utils/client");
 class MetricsComponent {
-    //获取权限
-    getCredentials(credentials, provider, accessAlias) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.logger.debug(`Obtain the key configuration, whether the key needs to be obtained separately: ${lodash_1.default.isEmpty(credentials)}`);
-            if (interface_1.isCredentials(credentials)) {
-                return credentials;
-            }
-            return yield core_1.getCredential(provider, accessAlias);
-        });
-    }
-    //组件入口函数
+    //组件入口函数  
     metrics(inputs) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.info('Create Metrics start...');
-            const { Properties } = inputs;
-            const region = Properties.regionId;
-            const serviceName = Properties.serviceName;
-            const functionName = Properties.functionName;
+            const prop = inputs === null || inputs === void 0 ? void 0 : inputs.props;
+            const region = prop.regionId;
+            const serviceName = prop.serviceName;
+            const functionName = prop.functionName;
             if (!region) {
                 this.logger.error(`region is empty.`);
             }
@@ -55,10 +45,11 @@ class MetricsComponent {
             if (!functionName) {
                 this.logger.error(`functionName is empty.`);
             }
-            const { ProjectName: projectName, Provider: provider, AccessAlias: accessAlias, } = inputs.Project;
-            this.logger.info(`获取入参:[${projectName}] inputs params: ${JSON.stringify(inputs)}`);
-            const credentials = yield this.getCredentials(inputs.Credentials, provider, accessAlias);
-            const metricsClient = new metrics_1.default(inputs.Properties, credentials);
+            this.logger.info(`获取入参:inputs params: ${JSON.stringify(inputs)}`);
+            const access = (_a = inputs === null || inputs === void 0 ? void 0 : inputs.project) === null || _a === void 0 ? void 0 : _a.access;
+            const credentials = yield core_1.getCredential(access);
+            yield this.report('metrics', 'metrics', credentials.AccountID);
+            const metricsClient = new metrics_1.default(prop, credentials);
             const isFindFunction = yield this.getFunction(credentials, region, serviceName, functionName);
             //当函数存在的情况下，启动查询metrics，否则Log写入错误
             if (isFindFunction) {
@@ -79,6 +70,19 @@ class MetricsComponent {
                     this.logger.error(`不存在${serviceName} 下的${functionName}`);
                     return false;
                 }
+            });
+        });
+    }
+    report(componentName, command, accountID, access) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let uid = accountID;
+            if (lodash_1.default.isEmpty(accountID)) {
+                const credentials = yield core_1.getCredential(access);
+                uid = credentials.AccountID;
+            }
+            core_1.reportComponent(componentName, {
+                command,
+                uid,
             });
         });
     }

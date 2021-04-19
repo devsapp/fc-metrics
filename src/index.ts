@@ -1,7 +1,7 @@
-import { HLogger, ILogger, getCredential } from '@serverless-devs/core';
+import { HLogger, ILogger, getCredential, reportComponent } from '@serverless-devs/core';
 import _ from 'lodash';
 import { CONTEXT } from './constant';
-import { ICredentials, isCredentials } from './interface';
+import { ICredentials, IProperties } from './interface';
 import Metrics from './utils/metrics';
 import { getFcClient } from './utils/client';
 
@@ -9,30 +9,13 @@ import { getFcClient } from './utils/client';
 export default class MetricsComponent {
   @HLogger(CONTEXT) logger: ILogger;
 
-  //获取权限
-  async getCredentials(
-    credentials: {} | ICredentials,
-    provider: string,
-    accessAlias?: string,
-  ): Promise<ICredentials> {
-    this.logger.debug(
-      `Obtain the key configuration, whether the key needs to be obtained separately: ${_.isEmpty(
-        credentials,
-      )}`,
-    );
-    if (isCredentials(credentials)) {
-      return credentials;
-    }
-    return await getCredential(provider, accessAlias);
-  }
-
-  //组件入口函数
+  //组件入口函数  
   async metrics(inputs) {
     this.logger.info('Create Metrics start...');
-    const { Properties } = inputs;
-    const region: string = Properties.regionId;
-    const serviceName: string = Properties.serviceName;
-    const functionName: string = Properties.functionName;
+    const prop: IProperties = inputs?.props;
+    const region: string = prop.regionId;
+    const serviceName: string = prop.serviceName;
+    const functionName: string = prop.functionName;
     if (!region) {
       this.logger.error(`region is empty.`);
     }
@@ -43,14 +26,11 @@ export default class MetricsComponent {
       this.logger.error(`functionName is empty.`);
     }
 
-    const {
-      ProjectName: projectName,
-      Provider: provider,
-      AccessAlias: accessAlias,
-    } = inputs.Project;
-    this.logger.info(`获取入参:[${projectName}] inputs params: ${JSON.stringify(inputs)}`);
-    const credentials = await this.getCredentials(inputs.Credentials, provider, accessAlias);
-    const metricsClient = new Metrics(inputs.Properties, credentials);
+    this.logger.info(`获取入参:inputs params: ${JSON.stringify(inputs)}`);
+    const access = inputs?.project?.access;
+    const credentials: ICredentials = await getCredential(access);
+    await this.report('metrics', 'metrics', credentials.AccountID);
+    const metricsClient = new Metrics(prop, credentials);
     const isFindFunction = await this.getFunction(credentials, region, serviceName, functionName);
     //当函数存在的情况下，启动查询metrics，否则Log写入错误
     if (isFindFunction) {
@@ -75,6 +55,19 @@ export default class MetricsComponent {
         return false;
       }
     })
+  }
+
+  async report(componentName: string, command: string, accountID?: string, access?: string): Promise<void> {
+    let uid: string = accountID;
+    if (_.isEmpty(accountID)) {
+      const credentials: ICredentials = await getCredential(access);
+      uid = credentials.AccountID;
+    }
+
+    reportComponent(componentName, {
+      command,
+      uid,
+    });
   }
 
 }
