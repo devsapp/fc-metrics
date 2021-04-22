@@ -4,7 +4,7 @@ access: alibaba.wangbow  #  秘钥别名
 
 services:
   fc-metrics-test: #  服务名称
-    component: /Users/wangbo/Desktop/project/github-project/fc-metrics/  # 组件名称
+    component: fc-metrics  # 组件名称
     props: #  组件的属性值
       regionId: cn-hangzhou
       serviceName:  test
