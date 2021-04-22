@@ -26,7 +26,7 @@ export default class MetricsComponent {
       this.logger.error(`functionName is empty.`);
     }
 
-    this.logger.debug(`获取入参:inputs params: ${JSON.stringify(inputs)}`);
+    this.logger.debug(`获取入参:inputs params: ${JSON.stringify(prop)}`);
     const access = inputs?.project?.access;
     const credentials: ICredentials = await getCredential(access);
     await this.report('metrics', 'metrics', credentials.AccountID);

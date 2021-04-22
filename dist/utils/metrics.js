@@ -70,7 +70,7 @@ class Metrics {
     start() {
         return __awaiter(this, void 0, void 0, function* () {
             const uri = path_1.default.join(__dirname, 'static');
-            this.logger.info(`uri params:: ${JSON.stringify(uri)}`);
+            this.logger.debug(`uri path: ${JSON.stringify(uri)}`);
             const that = this;
             function callback(app) {
                 app.use(bodyParser.json());

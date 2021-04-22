@@ -61,7 +61,7 @@ export default class Metrics {
 
   async start() {
     const uri = path.join(__dirname, 'static')
-    this.logger.info(`uri params:: ${JSON.stringify(uri)}`);
+    this.logger.debug(`uri path: ${JSON.stringify(uri)}`);
     const that: any = this;
     function callback(app) {
       app.use(bodyParser.json());
