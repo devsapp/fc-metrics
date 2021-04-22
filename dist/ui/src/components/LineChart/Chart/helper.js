@@ -3,10 +3,65 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WIDTH310 = exports.WIDTH230 = exports.WIDTH210 = exports.WIDTH200 = exports.WIDTH190 = exports.WIDTH164 = exports.WIDTH144 = exports.WIDTH130 = exports.WIDTH124 = exports.WIDTH100 = exports.WIDTH95 = exports.SIZEROW2 = exports.SIZEROW1 = exports.ISFUNCMETRICSACTIVE = exports.funcFunctionLegendList = exports.publicComputeUnit = exports.sessionCharNames = exports.chartsItemsInfo = exports.metricsfunFunctionLegendList = exports.metricsServicerRatesLegendList = exports.metricsServiceLegendList = exports.specUtilizationLegendList = exports.specConcurrentRealLegendList = exports.specErrorFunctionLegendList = exports.funFunctionItem = exports.chartsColors = exports.queryStringSearch = exports.isEmptyArray = exports.getDestination = exports.getMemory = exports.getTimeDuation = exports.getFunctionError = exports.getConcurrentRealColumn = exports.getFlowControl = exports.getFuncExecution = exports.staticDestinationData = exports.staticMemoryData = exports.staticTimesDurationData = exports.staticFuncErrorData = exports.staticConcurrentRealData = exports.staticFlowControlData = exports.staticfuncExecuData = exports.findEchartValue = exports.getEchartColor = exports.isEnLanguage = exports.getTransTableData = exports.getTransQualifier = exports.convertPoints = exports.formatPercent = exports.formatDuration = exports.formatBytes = exports.intlNumberFormat = exports.aheadFrontForward = exports.transChartData = exports.getMetricName = exports.metricLegendListAll = void 0;
+exports.WIDTH310 = exports.WIDTH230 = exports.WIDTH210 = exports.WIDTH200 = exports.WIDTH190 = exports.WIDTH164 = exports.WIDTH144 = exports.WIDTH130 = exports.WIDTH124 = exports.WIDTH100 = exports.WIDTH95 = exports.SIZEROW2 = exports.SIZEROW1 = exports.ISFUNCMETRICSACTIVE = exports.funcFunctionLegendList = exports.publicComputeUnit = exports.sessionCharNames = exports.chartsItemsInfo = exports.metricsfunFunctionLegendList = exports.metricsServicerRatesLegendList = exports.metricsServiceLegendList = exports.specUtilizationLegendList = exports.specConcurrentRealLegendList = exports.specErrorFunctionLegendList = exports.funFunctionItem = exports.chartsColors = exports.queryStringSearch = exports.isEmptyArray = exports.getDestination = exports.getMemory = exports.getTimeDuation = exports.getFunctionError = exports.getConcurrentRealColumn = exports.getFlowControl = exports.getFuncExecution = exports.staticDestinationData = exports.staticMemoryData = exports.staticTimesDurationData = exports.staticFuncErrorData = exports.staticConcurrentRealData = exports.staticFlowControlData = exports.staticfuncExecuData = exports.findEchartValue = exports.getEchartColor = exports.isEnLanguage = exports.getTransTableData = exports.getTransQualifier = exports.convertPoints = exports.formatPercent = exports.formatDuration = exports.formatBytes = exports.intlNumberFormat = exports.aheadFrontForward = exports.transChartData = exports.getMetricName = exports.metricLegendListAll = exports.mapTargetTOALL = exports.getApiMetricsTaget = void 0;
 const wind_intl_1 = __importDefault(require("@ali/wind-intl"));
 const lodash_1 = __importDefault(require("lodash"));
 const moment_1 = __importDefault(require("moment"));
+//获取不同qulifer时候，接口的入参指标
+function getApiMetricsTaget(qualifier, metricName) {
+    if (!qualifier || qualifier === "ALL") {
+        try {
+            return exports.mapTargetTOALL[metricName] && [exports.mapTargetTOALL[metricName]];
+        }
+        catch (e) {
+            throw `指标不存在,请检查:${metricName}`;
+        }
+    }
+    else {
+        return [metricName];
+    }
+}
+exports.getApiMetricsTaget = getApiMetricsTaget;
+//映射qulifer是ALL的指标名称字段
+exports.mapTargetTOALL = {
+    ServiceQualifierTotalInvocations: 'ServiceTotalInvocations',
+    ServiceQualifierServerErrors: 'ServiceServerErrors',
+    ServiceQualifierClientErrors: 'ServiceClientErrors',
+    ServiceQualifierFunctionErrors: 'ServiceFunctionErrors',
+    ServiceQualifierThrottles: 'ServiceThrottles',
+    ServiceQualifierResourceThrottles: 'ServiceResourceThrottles',
+    FunctionQualifierTotalInvocations: 'FunctionTotalInvocations',
+    FunctionQualifierProvisionInvocations: 'FunctionProvisionInvocations',
+    FunctionQualifierServerErrors: 'FunctionServerErrors',
+    FunctionQualifierClientErrors: 'FunctionClientErrors',
+    FunctionQualifierFunctionErrors: 'FunctionFunctionErrors',
+    FunctionQualifierConcurrencyThrottles: 'FunctionConcurrencyThrottles',
+    FunctionQualifierResourceThrottles: 'FunctionResourceThrottles',
+    FunctionQualifierAvgDuration: 'FunctionAvgDuration',
+    FunctionQualifierMaxDuration: 'FunctionMaxDuration',
+    FunctionQualifierLatencyAvg: 'FunctionLatencyAvg',
+    FunctionQualifierLatencyMax: 'FunctionLatencyMax',
+    FunctionQualifierMaxMemoryUsage: 'FunctionMaxMemoryUsage',
+    FunctionQualifierOndemandInstanceQuota: 'FunctionOndemandInstanceQuota',
+    FunctionQualifierOndemandActiveInstance: 'FunctionOndemandActiveInstance',
+    FunctionQualifierProvisionedCurrentInstance: 'FunctionProvisionedCurrentInstance',
+    RegionConcurrencyLimit: 'RegionConcurrencyLimit',
+    RegionConcurrentCount: 'RegionConcurrentCount',
+    FunctionQualifierCost: 'FunctionCost',
+    FunctionQualifierAsyncEventExpiredDropped: 'FunctionAsyncEventExpiredDropped',
+    FunctionQualifierDestinationErrors: 'FunctionDestinationErrors',
+    FunctionQualifierDestinationSucceeded: 'FunctionDestinationSucceeded',
+    InstanceConcurrentRequests: 'InstanceConcurrentRequests',
+    InstanceCPUQuotaPercent: 'InstanceCPUQuotaPercent',
+    InstanceCPUPercent: 'InstanceCPUPercent',
+    InstanceMemoryLimitMB: 'InstanceMemoryLimitMB',
+    InstanceMemoryUsageMB: 'InstanceMemoryUsageMB',
+    InstanceMemoryUsagePercent: 'InstanceMemoryUsagePercent',
+    InstanceRxBytesPerSecond: 'InstanceRxBytesPerSecond',
+    InstanceTxBytesPerSecond: 'InstanceTxBytesPerSecond',
+    FunctionQualifierEnqueueCount: 'FunctionEnqueueCount',
+    FunctionQualifierDequeueCount: 'FunctionDequeueCount',
+};
 exports.metricLegendListAll = [
     { metricName: 'RegionTotalInvocations', legendName: wind_intl_1.default('fc.dashboard.success.label'), colorPrimary: '#0881FE', },
     { metricName: 'RegionServerErrors', legendName: wind_intl_1.default('fc.dashboard.server.error.label'), colorPrimary: '#751616', },

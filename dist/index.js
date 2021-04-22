@@ -45,7 +45,7 @@ class MetricsComponent {
             if (!functionName) {
                 this.logger.error(`functionName is empty.`);
             }
-            this.logger.info(`获取入参:inputs params: ${JSON.stringify(inputs)}`);
+            this.logger.debug(`获取入参:inputs params: ${JSON.stringify(inputs)}`);
             const access = (_a = inputs === null || inputs === void 0 ? void 0 : inputs.project) === null || _a === void 0 ? void 0 : _a.access;
             const credentials = yield core_1.getCredential(access);
             yield this.report('metrics', 'metrics', credentials.AccountID);

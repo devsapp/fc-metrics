@@ -2,6 +2,70 @@ import intl from '@ali/wind-intl';
 import _ from 'lodash';
 import moment from 'moment';
 
+//获取不同qulifer时候，接口的入参指标
+export function getApiMetricsTaget(qualifier, metricName) {
+  if (!qualifier || qualifier === "ALL") {
+    try{
+      return  mapTargetTOALL[metricName] && [mapTargetTOALL[metricName]];
+    }catch(e){
+      throw `指标不存在,请检查:${metricName}`;
+    }
+  } else {
+    return [metricName];
+  }
+}
+
+//映射qulifer是ALL的指标名称字段
+export const mapTargetTOALL = {
+  ServiceQualifierTotalInvocations:'ServiceTotalInvocations',
+  ServiceQualifierServerErrors:'ServiceServerErrors',
+  ServiceQualifierClientErrors:'ServiceClientErrors',
+  ServiceQualifierFunctionErrors:'ServiceFunctionErrors',
+  ServiceQualifierThrottles:'ServiceThrottles',
+  ServiceQualifierResourceThrottles:'ServiceResourceThrottles',
+
+  FunctionQualifierTotalInvocations: 'FunctionTotalInvocations',
+  FunctionQualifierProvisionInvocations: 'FunctionProvisionInvocations',
+
+  FunctionQualifierServerErrors: 'FunctionServerErrors',
+  FunctionQualifierClientErrors: 'FunctionClientErrors',
+  FunctionQualifierFunctionErrors: 'FunctionFunctionErrors',
+
+  FunctionQualifierConcurrencyThrottles: 'FunctionConcurrencyThrottles',
+  FunctionQualifierResourceThrottles: 'FunctionResourceThrottles',
+
+  FunctionQualifierAvgDuration: 'FunctionAvgDuration',
+  FunctionQualifierMaxDuration: 'FunctionMaxDuration',
+
+  FunctionQualifierLatencyAvg: 'FunctionLatencyAvg',
+  FunctionQualifierLatencyMax: 'FunctionLatencyMax',
+
+  FunctionQualifierMaxMemoryUsage: 'FunctionMaxMemoryUsage',
+
+  FunctionQualifierOndemandInstanceQuota: 'FunctionOndemandInstanceQuota',
+  FunctionQualifierOndemandActiveInstance: 'FunctionOndemandActiveInstance',
+
+  FunctionQualifierProvisionedCurrentInstance: 'FunctionProvisionedCurrentInstance',
+
+  RegionConcurrencyLimit: 'RegionConcurrencyLimit',
+  RegionConcurrentCount: 'RegionConcurrentCount',
+
+  FunctionQualifierCost: 'FunctionCost',
+
+  FunctionQualifierAsyncEventExpiredDropped: 'FunctionAsyncEventExpiredDropped',
+  FunctionQualifierDestinationErrors: 'FunctionDestinationErrors',
+  FunctionQualifierDestinationSucceeded: 'FunctionDestinationSucceeded',
+  InstanceConcurrentRequests:'InstanceConcurrentRequests',
+  InstanceCPUQuotaPercent:'InstanceCPUQuotaPercent',
+  InstanceCPUPercent:'InstanceCPUPercent',
+  InstanceMemoryLimitMB:'InstanceMemoryLimitMB',
+  InstanceMemoryUsageMB:'InstanceMemoryUsageMB',
+  InstanceMemoryUsagePercent:'InstanceMemoryUsagePercent',
+  InstanceRxBytesPerSecond:'InstanceRxBytesPerSecond',
+  InstanceTxBytesPerSecond:'InstanceTxBytesPerSecond',
+  FunctionQualifierEnqueueCount:'FunctionEnqueueCount',
+  FunctionQualifierDequeueCount:'FunctionDequeueCount',
+}
 
 export const metricLegendListAll = [
 
