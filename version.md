@@ -1,1 +1,2 @@
-- 初始化项目
+- 修正core模块
+- 增加MIT LICENSE
