@@ -5,6 +5,8 @@ export default class Metrics {
     logClient: any;
     fcClient: any;
     cmsClient: any;
+    buildSLSClient: any;
+    getTraceClicnt: any;
     requestOption: string;
     accountId: string;
     accessKeyID: string;
@@ -13,6 +15,12 @@ export default class Metrics {
     serviceName: string;
     functionName: string;
     constructor(properties: IProperties, credentials: ICredentials);
+    getService(tableParams: any): Promise<any>;
+    describeFunctionInsights(params: any): Promise<unknown>;
+    describeRequestInsights(params: any): Promise<unknown>;
     fetchMetrics(data: any): Promise<any>;
+    fetchTrace(data: any): Promise<any>;
+    fetchTableList(data: any): Promise<unknown>;
+    fetchRequestInfo(data: any): Promise<unknown>;
     start(): Promise<void>;
 }

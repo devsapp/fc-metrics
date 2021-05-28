@@ -3,25 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WIDTH310 = exports.WIDTH230 = exports.WIDTH210 = exports.WIDTH200 = exports.WIDTH190 = exports.WIDTH164 = exports.WIDTH144 = exports.WIDTH130 = exports.WIDTH124 = exports.WIDTH100 = exports.WIDTH95 = exports.SIZEROW2 = exports.SIZEROW1 = exports.ISFUNCMETRICSACTIVE = exports.funcFunctionLegendList = exports.publicComputeUnit = exports.sessionCharNames = exports.chartsItemsInfo = exports.metricsfunFunctionLegendList = exports.metricsServicerRatesLegendList = exports.metricsServiceLegendList = exports.specUtilizationLegendList = exports.specConcurrentRealLegendList = exports.specErrorFunctionLegendList = exports.funFunctionItem = exports.chartsColors = exports.queryStringSearch = exports.isEmptyArray = exports.getDestination = exports.getMemory = exports.getTimeDuation = exports.getFunctionError = exports.getConcurrentRealColumn = exports.getFlowControl = exports.getFuncExecution = exports.staticDestinationData = exports.staticMemoryData = exports.staticTimesDurationData = exports.staticFuncErrorData = exports.staticConcurrentRealData = exports.staticFlowControlData = exports.staticfuncExecuData = exports.findEchartValue = exports.getEchartColor = exports.isEnLanguage = exports.getTransTableData = exports.getTransQualifier = exports.convertPoints = exports.formatPercent = exports.formatDuration = exports.formatBytes = exports.intlNumberFormat = exports.aheadFrontForward = exports.transChartData = exports.getMetricName = exports.metricLegendListAll = exports.mapTargetTOALL = exports.getApiMetricsTaget = void 0;
+exports.WIDTH310 = exports.WIDTH230 = exports.WIDTH210 = exports.WIDTH200 = exports.WIDTH190 = exports.WIDTH164 = exports.WIDTH144 = exports.WIDTH130 = exports.WIDTH124 = exports.WIDTH100 = exports.WIDTH95 = exports.SIZEROW2 = exports.SIZEROW1 = exports.ISFUNCMETRICSACTIVE = exports.staticMockdataNew = exports.composeTree = exports.transTableInfo = exports.getTableData = exports.getExpandRow = exports.funcFunctionLegendList = exports.publicComputeUnit = exports.sessionCharNames = exports.chartsItemsInfo = exports.metricsfunFunctionLegendList = exports.metricsServicerRatesLegendList = exports.metricsServiceLegendList = exports.specUtilizationLegendList = exports.specConcurrentRealLegendList = exports.specErrorFunctionLegendList = exports.funFunctionItem = exports.chartsColors = exports.queryStringSearch = exports.isEmptyArray = exports.getDestination = exports.getMemory = exports.getTimeDuation = exports.getFunctionError = exports.getConcurrentRealColumn = exports.getFlowControl = exports.getFuncExecution = exports.staticDestinationData = exports.staticMemoryData = exports.staticTimesDurationData = exports.staticFuncErrorData = exports.staticConcurrentRealData = exports.staticFlowControlData = exports.staticfuncExecuData = exports.findEchartValue = exports.getEchartColor = exports.isEnLanguage = exports.getTransTableData = exports.getTransQualifier = exports.convertPoints = exports.formatPercent = exports.formatDuration = exports.formatBytes = exports.TableColStyle = exports.momentFormat = exports.getConfig = exports.intlNumberFormat = exports.aheadFrontForward = exports.getApiMetricsTaget = exports.transFunctionTable = exports.transChartData = exports.getMetricName = exports.metricLegendListAll = exports.mapTargetTOALL = void 0;
+const react_1 = __importDefault(require("react"));
 const wind_intl_1 = __importDefault(require("@ali/wind-intl"));
 const lodash_1 = __importDefault(require("lodash"));
 const moment_1 = __importDefault(require("moment"));
-//获取不同qulifer时候，接口的入参指标
-function getApiMetricsTaget(qualifier, metricName) {
-    if (!qualifier || qualifier === "ALL") {
-        try {
-            return exports.mapTargetTOALL[metricName] && [exports.mapTargetTOALL[metricName]];
-        }
-        catch (e) {
-            throw `指标不存在,请检查:${metricName}`;
-        }
-    }
-    else {
-        return [metricName];
-    }
-}
-exports.getApiMetricsTaget = getApiMetricsTaget;
+const wind_1 = require("@ali/wind");
+const config = window.ALIYUN_FC_CONSOLE_CONFIG || {};
 //映射qulifer是ALL的指标名称字段
 exports.mapTargetTOALL = {
     ServiceQualifierTotalInvocations: 'ServiceTotalInvocations',
@@ -112,6 +100,53 @@ function transChartData(data, params) {
     });
 }
 exports.transChartData = transChartData;
+//获取Function级别table数据
+function transFunctionTable(data) {
+    if (!Array.isArray(data)) {
+        return [];
+    }
+    const out = data;
+    //按照请求时间降序排列
+    const sortOut = lodash_1.default.sortBy(out, function (item) {
+        return -item.__time__;
+    }) || [];
+    //获取最大的调用时间
+    let maxDurationMs = sortOut[0] && sortOut[0].durationMs || 0;
+    let maxMemoryUsageMB = sortOut[0] && sortOut[0].memoryUsageMB || 0;
+    sortOut.forEach((item) => {
+        if (Number(item.durationMs) > Number(maxDurationMs)) {
+            maxDurationMs = item.durationMs;
+        }
+        if (Number(item.memoryUsageMB) > Number(maxMemoryUsageMB)) {
+            maxMemoryUsageMB = item.memoryUsageMB;
+        }
+    });
+    sortOut.forEach((item) => {
+        item.contentWidthNumber = (item.durationMs / maxDurationMs) * 100;
+        item.contentWidth = (item.durationMs / maxDurationMs) * 100 + '%';
+        item.contentMemoryWidthNumber = (item.memoryUsageMB / maxMemoryUsageMB) * 100;
+        item.contentMemoryWidth = (item.memoryUsageMB / maxMemoryUsageMB) * 100 + '%';
+    });
+    return sortOut || [];
+}
+exports.transFunctionTable = transFunctionTable;
+//获取不同qulifer时候，接口的入参指标
+function getApiMetricsTaget(qualifier, metricsNameList) {
+    if (!qualifier || qualifier === "ALL") {
+        try {
+            return metricsNameList.map((item) => {
+                return exports.mapTargetTOALL[item];
+            });
+        }
+        catch (e) {
+            throw `指标不存在`;
+        }
+    }
+    else {
+        return metricsNameList;
+    }
+}
+exports.getApiMetricsTaget = getApiMetricsTaget;
 //当数组里首位不是开始时间的话，需要将开始时间补全进去
 function aheadFrontForward(data = [{}], startTime, endTime) {
     if (!data[0] || data[0].timestamp != startTime) {
@@ -147,6 +182,66 @@ function intlNumberFormat(num) {
     }
 }
 exports.intlNumberFormat = intlNumberFormat;
+function getConfig(key) {
+    if (key === 'regions') {
+        return [
+            { regionId: 'cn-beijing' },
+            { regionId: 'cn-hangzhou' },
+            { regionId: 'ap-southeast-1' },
+            { regionId: 'cn-hongkong' },
+            { regionId: 'cn-shanghai' },
+            { regionId: 'cn-shenzhen' },
+            { regionId: 'ap-southeast-2' },
+            { regionId: 'ap-northeast-1' }
+        ];
+    }
+    if (key === 'vpcStatus') {
+        return true;
+    }
+    if (key === 'serviceStatus') {
+        if (config.ubmsWhite) { // 当前用户是否在 ubms 白名单里面，在则进入
+            return true;
+        }
+        if (config.serviceStatus && config.spStatus) { // 如果 fc 开通并且（sp 存在 或者 请求 sp 异常）则一定为true
+            return true;
+        }
+        return false; // 用户没有开通 fc 或者 sp.chargeType !== 'AfterPay' 为空, 则没有开通
+    }
+    return config[key];
+}
+exports.getConfig = getConfig;
+exports.momentFormat = (value) => {
+    const lang = getConfig('lang');
+    const format = lang === 'zh_CN' ? 'YYYY年MM月DD日 HH:mm:ss' : 'MMM D, YYYY, h:mm:ss';
+    return moment_1.default.utc(value).local().format(format);
+};
+function TableColStyle(value, contentWidth, contentWidthNumber) {
+    if ((0 < contentWidthNumber) && (contentWidthNumber < 1)) {
+        contentWidth = '1%';
+    }
+    const innerBg = {
+        width: contentWidth,
+        height: '6px',
+        background: '#e1effe',
+        backgroundImage: `linear-gradient(90deg, #9FC9FF 0%, #0881FE 100%)`,
+        boxShadow: `0 -1px 0 0 #EBEBEB`,
+        marginTop: '8px',
+    };
+    const ballonFont = {
+        width: '96%',
+        display: 'block',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        cursor: 'pointer',
+    };
+    const Tooltip = wind_1.Balloon.Tooltip;
+    return (react_1.default.createElement("div", null,
+        react_1.default.createElement("div", { style: { float: 'left', width: '35%', height: '20px', textAlign: 'left' } },
+            react_1.default.createElement(Tooltip, { trigger: react_1.default.createElement("div", { style: ballonFont }, value), align: 'l' }, value)),
+        react_1.default.createElement("div", { style: { float: 'left', width: '50%', height: '20px', textAlign: 'left' } },
+            react_1.default.createElement("div", { style: innerBg }))));
+}
+exports.TableColStyle = TableColStyle;
 function formatBytes(a) {
     if (a === 0) {
         return '0 Bytes';
@@ -378,7 +473,7 @@ function queryStringSearch(str) {
     const string = (str !== undefined) ? str : window.location.search;
     let result = string.match(new RegExp('[^\?\&]+=[^\?\&]+', 'g'));
     if (result == null) {
-        return result = '';
+        return { startTime: "", endTime: "", recent: "", traceId: '' };
     }
     const params = {};
     for (let i = 0; i < result.length; i++) {
@@ -596,6 +691,364 @@ exports.funcFunctionLegendList = [
         colorPrimary: '#E44390',
     },
 ];
+//获取table的行点击的数据
+function getExpandRow(timeLineData) {
+    if (!timeLineData || !timeLineData.Spans || !timeLineData.Spans.Span || timeLineData.Spans.Span.length == 0) {
+        return [];
+    }
+    const originArr = Array.isArray(timeLineData.Spans.Span) ? (timeLineData.Spans.Span) : [];
+    const expandRowArr = originArr.map((item) => item.RpcId);
+    console.log('expandRowArr', expandRowArr);
+    return expandRowArr;
+}
+exports.getExpandRow = getExpandRow;
+//获取table的数据
+function getTableData(timeLineData) {
+    if (!timeLineData || !timeLineData.Spans || !timeLineData.Spans.Span) {
+        return {};
+    }
+    let rootEle;
+    const originArr = Array.isArray(timeLineData.Spans.Span) ? (timeLineData.Spans.Span) : [];
+    const idArr = [];
+    originArr.forEach(element => {
+        const splitArr = element.RpcId.split('.');
+        if (splitArr && splitArr.length > 1) {
+            splitArr.splice(splitArr.length - 1, 1);
+            console.log('splitArr.splice(splitArr.length,1)', splitArr);
+            element.PID = splitArr.join('.');
+            if (idArr.indexOf(element.ServiceName) == -1) {
+                idArr.push(element.ServiceName);
+                element.id = element.ServiceName;
+            }
+        }
+        else {
+            element.PID = null;
+            element.id = element.ServiceName;
+            rootEle = element;
+            if (idArr.indexOf(element.ServiceName) == -1) {
+                idArr.push(element.ServiceName);
+                element.id = element.ServiceName;
+            }
+        }
+    });
+    return transTableInfo(originArr, rootEle);
+}
+exports.getTableData = getTableData;
+//增加偏移量字段和所占UI宽阔比例
+function transTableInfo(originArr, rootEle) {
+    const { Duration, Timestamp } = rootEle || {};
+    const ereyyMSWidth = 1 / Number(Duration);
+    const numberTimestamp = Number(Timestamp);
+    originArr.forEach((item) => {
+        item.colorConentWidth = (ereyyMSWidth * item.Duration) * 100 + '%';
+        item.deviation = (Number(item.Timestamp) - numberTimestamp) * ereyyMSWidth * 100 + '%';
+    });
+    console.log('originWidth', originArr);
+    return composeTree(originArr);
+}
+exports.transTableInfo = transTableInfo;
+//吧数组转换成tree
+function composeTree(array = []) {
+    const data = JSON.parse(JSON.stringify(array));
+    const result = [];
+    if (!Array.isArray(data)) {
+        return {};
+    }
+    data.forEach(item => {
+        delete item.children;
+    });
+    const map = {};
+    let max = 0;
+    let min = 0;
+    let endTime = 0;
+    data.forEach(item => {
+        map[item.RpcId] = item;
+        if (!endTime) {
+            endTime = parseInt(item.Timestamp) + parseInt(item.Duration);
+        }
+        else if (endTime < parseInt(item.Timestamp) + parseInt(item.Duration)) {
+            endTime = parseInt(item.Timestamp) + parseInt(item.Duration);
+        }
+        if (!min) {
+            min = item.Timestamp;
+        }
+    });
+    console.log('min', min, 'max', endTime - min);
+    //最大Duration = 最大结束时间- 最小开始时间
+    max = endTime - min;
+    const obj = {};
+    //const obj = {};
+    console.log('noTransData', data);
+    data.forEach(item => {
+        const parent = map[item.PID];
+        if (parent) {
+            (parent.children || (parent.children = [])).push(item);
+        }
+        else {
+            obj.data = {
+                Duration: max,
+                Timestamp: min,
+                id: item.ServiceName,
+            };
+            result.push(item);
+        }
+    });
+    if (obj.data) {
+        obj.data.children = result;
+    }
+    console.log('trasnOBj', obj);
+    return obj;
+}
+exports.composeTree = composeTree;
+exports.staticMockdataNew = {
+    "code": "200",
+    "data": {
+        "RequestId": "17C8251C-AE87-48E8-BCF4-DCF9BA96BD4F",
+        "Spans": {
+            "Span": [
+                {
+                    "ParentSpanId": "0",
+                    "ServiceIp": "21.0.5.1",
+                    "OperationName": "InvokeFunction",
+                    "Duration": 5000314,
+                    "TagEntryList": {
+                        "TagEntry": [
+                            {
+                                "Value": "be0486ed-01e4-4b9e-b8d6-9651cf6c4ab0",
+                                "Key": "x-fc-request-id"
+                            },
+                            {
+                                "Value": "ratelimiting",
+                                "Key": "sampler.type"
+                            },
+                            {
+                                "Value": "1.0",
+                                "Key": "sampler.param"
+                            }
+                        ]
+                    },
+                    "Timestamp": "1610451336867692",
+                    "HaveStack": false,
+                    "LogEventList": {
+                        "LogEvent": []
+                    },
+                    "ServiceName": "FC:observability-demo/arms-java",
+                    "RpcId": "0",
+                    "TraceID": "5380abbf10490039",
+                    "ResultCode": "0",
+                    "SpanId": "5380abbf10490039"
+                },
+                {
+                    "ParentSpanId": "5380abbf10490039",
+                    "ServiceIp": "21.0.5.1",
+                    "OperationName": "Invocation",
+                    "Duration": 5000252,
+                    "TagEntryList": {
+                        "TagEntry": [
+                            {
+                                "Value": "1c45p1b",
+                                "Key": "__error.kind"
+                            },
+                            {
+                                "Value": "be0486ed-01e4-4b9e-b8d6-9651cf6c4ab0",
+                                "Key": "x-fc-request-id"
+                            }
+                        ]
+                    },
+                    "Timestamp": "1610451336867751",
+                    "HaveStack": false,
+                    "LogEventList": {
+                        "LogEvent": [
+                            {
+                                "TagEntryList": {
+                                    "TagEntry": [
+                                        {
+                                            "Value": "FunctionTimeoutError:Function timed out after 5 seconds (maxMemoryUsage: 211.99MB) ",
+                                            "Key": "stack"
+                                        },
+                                        {
+                                            "Value": "error",
+                                            "Key": "event"
+                                        }
+                                    ]
+                                },
+                                "Timestamp": "1610451341868003"
+                            }
+                        ]
+                    },
+                    "ServiceName": "FC:observability-demo/arms-java-1",
+                    "RpcId": "0.1",
+                    "TraceID": "5380abbf10490039",
+                    "ResultCode": "0",
+                    "SpanId": "72356a49c955f00d"
+                },
+                {
+                    "ParentSpanId": "72356a49c955f00d",
+                    "ServiceIp": "21.0.5.1",
+                    "OperationName": "AccessOSS",
+                    "Duration": 11,
+                    "TagEntryList": {
+                        "TagEntry": [
+                            {
+                                "Value": "objectValue",
+                                "Key": "objectKey"
+                            }
+                        ]
+                    },
+                    "Timestamp": "1610451336869000",
+                    "HaveStack": false,
+                    "LogEventList": {
+                        "LogEvent": []
+                    },
+                    "ServiceName": "FC:observability-demo/arms-java-2",
+                    "RpcId": "0.1.1",
+                    "TraceID": "5380abbf10490039",
+                    "ResultCode": "0",
+                    "SpanId": "966128d76653b546"
+                },
+                {
+                    "ParentSpanId": "72356a49c955f00d",
+                    "ServiceIp": "21.0.5.1",
+                    "OperationName": "SelectSQL",
+                    "Duration": 5093,
+                    "TagEntryList": {
+                        "TagEntry": []
+                    },
+                    "Timestamp": "1610451336869000",
+                    "HaveStack": false,
+                    "LogEventList": {
+                        "LogEvent": []
+                    },
+                    "ServiceName": "FC:observability-demo/arms-java",
+                    "RpcId": "0.1.2",
+                    "TraceID": "5380abbf10490039",
+                    "ResultCode": "0",
+                    "SpanId": "2dcee466e08820ce"
+                },
+                {
+                    "ParentSpanId": "72356a49c955f00d",
+                    "ServiceIp": "21.0.5.1",
+                    "OperationName": "InvokeFunction",
+                    "Duration": 1025909,
+                    "TagEntryList": {
+                        "TagEntry": [
+                            {
+                                "Value": "5b141f46-be49-45e2-a2ba-417e1cba3f0f",
+                                "Key": "x-fc-request-id"
+                            }
+                        ]
+                    },
+                    "Timestamp": "1610451336880704",
+                    "HaveStack": false,
+                    "LogEventList": {
+                        "LogEvent": []
+                    },
+                    "ServiceName": "FC:observability-demo/arms-java",
+                    "RpcId": "0.1.3",
+                    "TraceID": "5380abbf10490039",
+                    "ResultCode": "0",
+                    "SpanId": "85a24b93dad3d7d"
+                },
+                {
+                    "ParentSpanId": "85a24b93dad3d7d",
+                    "ServiceIp": "21.0.5.1",
+                    "OperationName": "Invocation",
+                    "Duration": 1025854,
+                    "TagEntryList": {
+                        "TagEntry": [
+                            {
+                                "Value": "5b141f46-be49-45e2-a2ba-417e1cba3f0f",
+                                "Key": "x-fc-request-id"
+                            }
+                        ]
+                    },
+                    "Timestamp": "1610451336880757",
+                    "HaveStack": false,
+                    "LogEventList": {
+                        "LogEvent": []
+                    },
+                    "ServiceName": "FC:observability-demo/arms-java",
+                    "RpcId": "0.1.3.1",
+                    "TraceID": "5380abbf10490039",
+                    "ResultCode": "0",
+                    "SpanId": "26cef8f3ac0c0dba"
+                },
+                {
+                    "ParentSpanId": "72356a49c955f00d",
+                    "ServiceIp": "21.0.5.4",
+                    "OperationName": "InvokeFunction",
+                    "Duration": 5000439,
+                    "TagEntryList": {
+                        "TagEntry": [
+                            {
+                                "Value": "97aaa133-8f2a-4965-b543-ad03bb45fb3e",
+                                "Key": "x-fc-request-id"
+                            }
+                        ]
+                    },
+                    "Timestamp": "1610451337914511",
+                    "HaveStack": false,
+                    "LogEventList": {
+                        "LogEvent": []
+                    },
+                    "ServiceName": "FC:observability-demo/arms-java",
+                    "RpcId": "0.1.4",
+                    "TraceID": "5380abbf10490039",
+                    "ResultCode": "0",
+                    "SpanId": "6707479f40fb3819"
+                },
+                {
+                    "ParentSpanId": "6707479f40fb3819",
+                    "ServiceIp": "21.0.5.4",
+                    "OperationName": "Invocation",
+                    "Duration": 5000392,
+                    "TagEntryList": {
+                        "TagEntry": [
+                            {
+                                "Value": "goazvg",
+                                "Key": "__error.kind"
+                            },
+                            {
+                                "Value": "97aaa133-8f2a-4965-b543-ad03bb45fb3e",
+                                "Key": "x-fc-request-id"
+                            }
+                        ]
+                    },
+                    "Timestamp": "1610451337914554",
+                    "HaveStack": false,
+                    "LogEventList": {
+                        "LogEvent": [
+                            {
+                                "TagEntryList": {
+                                    "TagEntry": [
+                                        {
+                                            "Value": "FunctionTimeoutError:Function timed out after 5 seconds (maxMemoryUsage: 27.64MB) ",
+                                            "Key": "stack"
+                                        },
+                                        {
+                                            "Value": "error",
+                                            "Key": "event"
+                                        }
+                                    ]
+                                },
+                                "Timestamp": "1610451342914946"
+                            }
+                        ]
+                    },
+                    "ServiceName": "FC:observability-demo/arms-java",
+                    "RpcId": "0.1.4.1",
+                    "TraceID": "5380abbf10490039",
+                    "ResultCode": "0",
+                    "SpanId": "6f51fd294e3a740c"
+                }
+            ]
+        }
+    },
+    "hostName": "fc-console011136047178.et2",
+    "message": "success",
+    "requestID": "3b6ea053-4e6b-4012-9a2e-a67b5d3f533b",
+    "success": true
+};
 exports.ISFUNCMETRICSACTIVE = true;
 exports.SIZEROW1 = 1;
 exports.SIZEROW2 = 2;

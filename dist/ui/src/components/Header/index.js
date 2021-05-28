@@ -41,13 +41,14 @@ exports.default = () => {
         getTimeConfig();
     }, []);
     const getTimeConfig = () => {
-        const { endTime, startTime, period } = timeRangePickerRef.current;
+        const { endTime, startTime, period, recent } = timeRangePickerRef.current;
         const { qualifier } = qualifierRef.current;
         setConfig({
             endTime,
             startTime,
             period,
             qualifier,
+            recent,
         });
     };
     return (react_1.default.createElement(Row, { className: "header" },

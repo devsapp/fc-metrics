@@ -1,4 +1,4 @@
-export declare function getApiMetricsTaget(qualifier: any, metricName: any): any[];
+import React from 'react';
 export declare const mapTargetTOALL: {
     ServiceQualifierTotalInvocations: string;
     ServiceQualifierServerErrors: string;
@@ -45,8 +45,13 @@ export declare const metricLegendListAll: {
 }[];
 export declare function getMetricName(key: any): any;
 export declare function transChartData(data: any, params: any): any;
+export declare function transFunctionTable(data: any): any[];
+export declare function getApiMetricsTaget(qualifier: any, metricsNameList: any): any;
 export declare function aheadFrontForward(data: any, startTime: any, endTime: any): any;
 export declare function intlNumberFormat(num: any): any;
+export declare function getConfig(key: any): any;
+export declare const momentFormat: (value: any) => string;
+export declare function TableColStyle(value: any, contentWidth: any, contentWidthNumber: any): JSX.Element;
 export declare function formatBytes(a: any): string;
 export declare function formatDuration(ms: any): string;
 export declare function formatPercent(value: any): string;
@@ -79,7 +84,13 @@ export declare function getDestination(FunctionAsyncEventExpiredDropped: any, Fu
     timestamp: any;
 }[];
 export declare function isEmptyArray(...data: any[]): boolean;
-export declare function queryStringSearch(str: any): any;
+export declare function queryStringSearch(str: any): {
+    startTime: string;
+    endTime: string;
+    recent: string;
+    traceId?: string;
+    qualifier?: string;
+};
 export declare function chartsColors(): {
     functionChartsColors: string[];
     flowControlChartsColors: string[];
@@ -160,6 +171,73 @@ export declare const funcFunctionLegendList: {
     name: any;
     colorPrimary: string;
 }[];
+export declare function getExpandRow(timeLineData: any): any;
+export declare function getTableData(timeLineData: any): {
+    data?: {
+        children?: {} | [];
+        Duration: number;
+        Timestamp: React.Key;
+        id: string;
+    };
+};
+export declare function transTableInfo(originArr: any, rootEle: any): {
+    data?: {
+        children?: {} | [];
+        Duration: number;
+        Timestamp: React.Key;
+        id: string;
+    };
+};
+export declare function composeTree(array?: any[]): {
+    data?: {
+        children?: [] | {};
+        Duration: number;
+        Timestamp: string | number;
+        id: string;
+    };
+};
+export declare const staticMockdataNew: {
+    code: string;
+    data: {
+        RequestId: string;
+        Spans: {
+            Span: {
+                ParentSpanId: string;
+                ServiceIp: string;
+                OperationName: string;
+                Duration: number;
+                TagEntryList: {
+                    TagEntry: {
+                        Value: string;
+                        Key: string;
+                    }[];
+                };
+                Timestamp: string;
+                HaveStack: boolean;
+                LogEventList: {
+                    LogEvent: {
+                        TagEntryList: {
+                            TagEntry: {
+                                Value: string;
+                                Key: string;
+                            }[];
+                        };
+                        Timestamp: string;
+                    }[];
+                };
+                ServiceName: string;
+                RpcId: string;
+                TraceID: string;
+                ResultCode: string;
+                SpanId: string;
+            }[];
+        };
+    };
+    hostName: string;
+    message: string;
+    requestID: string;
+    success: boolean;
+};
 export declare const ISFUNCMETRICSACTIVE = true;
 export declare const SIZEROW1 = 1;
 export declare const SIZEROW2 = 2;

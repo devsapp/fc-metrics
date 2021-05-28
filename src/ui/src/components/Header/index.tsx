@@ -23,7 +23,7 @@ export default () => {
   }, []);
 
   const getTimeConfig = () => {
-    const { endTime, startTime, period } = timeRangePickerRef.current;
+    const { endTime, startTime, period, recent } = timeRangePickerRef.current;
     const { qualifier } = qualifierRef.current;
 
     setConfig({
@@ -31,6 +31,7 @@ export default () => {
       startTime,
       period,
       qualifier,
+      recent,
     });
   };
 
