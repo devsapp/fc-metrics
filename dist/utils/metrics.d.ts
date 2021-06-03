@@ -9,7 +9,7 @@ export default class Metrics {
     accountId: string;
     accessKeyID: string;
     accessKeySecret: string;
-    regionId: string;
+    region: string;
     serviceName: string;
     functionName: string;
     constructor(properties: IProperties, credentials: ICredentials);

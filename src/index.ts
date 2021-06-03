@@ -13,7 +13,7 @@ export default class MetricsComponent {
   async metrics(inputs) {
     this.logger.info('Create Metrics start...');
     const prop: IProperties = inputs?.props;
-    const region: string = prop.regionId;
+    const region: string = prop.region;
     const serviceName: string = prop.serviceName;
     const functionName: string = prop.functionName;
     if (!region) {

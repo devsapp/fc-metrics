@@ -3,15 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCmsClient = exports.getFcClient = void 0;
 const Core = require('@alicloud/pop-core');
 const FC = require('@alicloud/fc2');
-exports.getFcClient = (credentials, regionId) => {
+exports.getFcClient = (credentials, region) => {
     return new FC(credentials.AccountID, {
         accessKeyID: credentials.AccessKeyID,
         accessKeySecret: credentials.AccessKeySecret,
-        region: regionId,
+        region: region,
         timeout: 60000,
     });
 };
-exports.getCmsClient = (credentials, region) => {
+exports.getCmsClient = (credentials) => {
     return new Core({
         accessKeyId: credentials.AccessKeyID,
         accessKeySecret: credentials.AccessKeySecret,

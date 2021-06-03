@@ -2,7 +2,7 @@ Type: Component
 Name: fc-metrics
 Provider:
   - 阿里云
-Version: 0.0.4
+Version: 0.0.6
 Description: 函数计算Metrics组件
 HomePage: https://github.com/devsapp/fc-metrics
 Tags: #标签详情
@@ -18,7 +18,7 @@ Service:
     Authorities:
       - 指标查询相关权限
 Properties:
-  RegionId:
+  region:
     Description: 地域
     Required: true
     Type:
@@ -42,12 +42,12 @@ Properties:
           - us-west-1
           - us-east-1
           - ap-south-1
-  ServiceName:
+  serviceName:
     Description: 服务名
     Required: true
     Type:
       - String
-  FunctionName:
+  functionName:
     Description: 函数名
     Required: true
     Type:

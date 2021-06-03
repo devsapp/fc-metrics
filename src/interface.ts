@@ -6,7 +6,7 @@ export interface ICredentials {
 }
 
 export interface IProperties {
-  regionId: string;
+  region: string;
   serviceName: string;
   functionName: string;
 }

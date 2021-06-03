@@ -34,24 +34,24 @@ class Metrics {
         this.accountId = credentials.AccountID;
         this.accessKeyID = credentials.AccessKeyID;
         this.accessKeySecret = credentials.AccessKeySecret;
-        this.regionId = properties.regionId;
+        this.region = properties.region;
         this.serviceName = properties.serviceName;
         this.functionName = properties.functionName;
-        this.fcClient = client_1.getFcClient(credentials, properties.regionId);
-        this.cmsClient = client_1.getCmsClient(credentials, properties.regionId);
+        this.fcClient = client_1.getFcClient(credentials, properties.region);
+        this.cmsClient = client_1.getCmsClient(credentials);
     }
     fetchMetrics(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const { startTime, endTime, period, qualifier, metric } = data;
             const dimension = {
                 userId: this.accountId,
-                region: this.regionId,
+                region: this.region,
                 serviceName: this.serviceName,
                 functionName: this.functionName,
             };
             const params = {
                 Namespace: constant_1.apiNamespace,
-                RegionId: this.regionId,
+                RegionId: this.region,
                 Period: period,
                 StartTime: startTime,
                 EndTime: endTime,
