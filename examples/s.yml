@@ -6,6 +6,6 @@ services:
   fc-metrics-test: #  服务名称
     component: fc-metrics  # 组件名称
     props: #  组件的属性值
-      regionId: cn-hangzhou
+      region: cn-hangzhou
       serviceName:  test
       functionName:  testHello
