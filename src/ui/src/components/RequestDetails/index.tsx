@@ -39,7 +39,7 @@ export default () => {
 
     async function getTrace(params) {
         setTimeLineDataLoading(true)
-        //  const getRequestTimeLineData = staticMockdataNew;
+       //  const getRequestTimeLineData = staticMockdataNew;
         const getRequestTimeLineData = await getTraceData(params);;
         const { data } = getRequestTimeLineData || {};
         const dataSource = getTableData(data);
@@ -73,7 +73,6 @@ export default () => {
                     qualifier={qualifier}
                     regionId={'cn-shanghai'}
                 />
-
 
             </Loading>
         </div>

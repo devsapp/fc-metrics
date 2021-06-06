@@ -2,7 +2,7 @@
 
 const INPUTS = {
   Properties: {
-    regionId: 'cn-hangzhou',
+    region: 'cn-hangzhou',
     serviceName: 'test',
     functionName: 'testHello',
   },

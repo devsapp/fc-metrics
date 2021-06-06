@@ -25,8 +25,8 @@ export class Detail extends Component {
     const functionName = splitStr[1] || '';
     const value = item.Value || '';
     var path = {
-      pathname: `/fc/dashboard/${regionId}/${serviceName}/${functionName}/${value}?startTime=${startTime}&endTime=${endTime}&qualifier=${qualifier}`,
-      search: `?startTime=${startTime}&endTime=${endTime}&qualifier=${qualifier}`
+      pathname: `/details`,
+      search: `?requestId=${value}&startTime=${startTime}&endTime=${endTime}&qualifier=${qualifier}`
     }
 
     return (
@@ -43,7 +43,7 @@ export class Detail extends Component {
               <tr key={i}>
                 <td style={{ width: 120 }}>{item.Key}</td>
                 <td style={{ wordBreak: 'break-word' }}>
-                  {item.Key === 'x-fc-request-id' && this.goto(item, ServiceName) || item.Value}
+                  {item.Key === 'x-fc-request-id' && item.Value}
                 </td>
               </tr>
             ))}

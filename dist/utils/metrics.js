@@ -34,13 +34,13 @@ class Metrics {
         this.accountId = credentials.AccountID;
         this.accessKeyID = credentials.AccessKeyID;
         this.accessKeySecret = credentials.AccessKeySecret;
-        this.regionId = properties.regionId;
+        this.region = properties.region;
         this.serviceName = properties.serviceName;
         this.functionName = properties.functionName;
-        this.fcClient = client_1.getFcClient(credentials, properties.regionId);
+        this.fcClient = client_1.getFcClient(credentials, properties.region);
         this.cmsClient = client_1.getCmsClient(credentials);
-        this.buildSLSClient = client_1.getSLSClient(credentials, properties.regionId);
-        this.getTraceClicnt = client_1.getTraceClicnt(credentials, properties.regionId);
+        this.buildSLSClient = client_1.getSLSClient(credentials, properties.region);
+        this.getTraceClicnt = client_1.getTraceClicnt(credentials, properties.region);
     }
     getService(tableParams) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -138,13 +138,13 @@ class Metrics {
             const { startTime, endTime, period, qualifier, metric } = data;
             const dimension = {
                 userId: this.accountId,
-                region: this.regionId,
+                region: this.region,
                 serviceName: this.serviceName,
                 functionName: this.functionName,
             };
             const params = {
                 Namespace: constant_1.apiNamespace,
-                RegionId: this.regionId,
+                RegionId: this.region,
                 Period: period,
                 StartTime: startTime,
                 EndTime: endTime,
@@ -195,7 +195,7 @@ class Metrics {
         return __awaiter(this, void 0, void 0, function* () {
             const { startTime, endTime, qualifier } = data;
             const tableListParams = {
-                regionId: this.regionId,
+                regionId: this.region,
                 startTime: `${startTime}`,
                 endTime: `${endTime}`,
                 serviceName: this.serviceName,
@@ -215,7 +215,7 @@ class Metrics {
         return __awaiter(this, void 0, void 0, function* () {
             const { startTime, endTime, qualifier, requestId } = data;
             const requestParams = {
-                regionId: this.regionId,
+                regionId: this.region,
                 startTime: `${startTime}`,
                 endTime: `${endTime}`,
                 serviceName: this.serviceName,

@@ -19,7 +19,7 @@ export default class Metrics {
   accountId: string;
   accessKeyID: string;
   accessKeySecret: string;
-  regionId: string;
+  region: string;
   serviceName: string;
   functionName: string;
   constructor(properties: IProperties, credentials: ICredentials) {
@@ -27,13 +27,13 @@ export default class Metrics {
     this.accountId = credentials.AccountID;
     this.accessKeyID = credentials.AccessKeyID;
     this.accessKeySecret = credentials.AccessKeySecret;
-    this.regionId = properties.regionId;
+    this.region = properties.region;
     this.serviceName = properties.serviceName;
     this.functionName = properties.functionName;
-    this.fcClient = getFcClient(credentials, properties.regionId);
+    this.fcClient = getFcClient(credentials, properties.region);
     this.cmsClient = getCmsClient(credentials);
-    this.buildSLSClient = getSLSClient(credentials, properties.regionId);
-    this.getTraceClicnt = getTraceClicnt(credentials, properties.regionId);
+    this.buildSLSClient = getSLSClient(credentials, properties.region);
+    this.getTraceClicnt = getTraceClicnt(credentials, properties.region);
   }
 
   async getService(tableParams) {
@@ -79,7 +79,7 @@ export default class Metrics {
     if (params["qualifier"]) {
       opt["query"] = params["qualifier"]
     }
-   
+
     return new Promise((resolve, reject) => {
       client.getLogs(opt, function (err, data) {
         if (err) {
@@ -137,13 +137,13 @@ export default class Metrics {
     const { startTime, endTime, period, qualifier, metric } = data;
     const dimension = {
       userId: this.accountId,
-      region: this.regionId,
+      region: this.region,
       serviceName: this.serviceName,
       functionName: this.functionName,
     };
     const params = {
       Namespace: apiNamespace,
-      RegionId: this.regionId,
+      RegionId: this.region,
       Period: period,
       StartTime: startTime,
       EndTime: endTime,
@@ -171,7 +171,7 @@ export default class Metrics {
       method: 'POST',
     };
     return await this.getTraceClicnt.request('GetTrace', args, requestOption).then((result) => {
-     // console.log(JSON.stringify(result));
+      // console.log(JSON.stringify(result));
       const res = {
         "data": result,
         "success": true,
@@ -195,7 +195,7 @@ export default class Metrics {
   async fetchTableList(data) {
     const { startTime, endTime, qualifier } = data;
     const tableListParams = {
-      regionId: this.regionId,
+      regionId: this.region,
       startTime: `${startTime}`,
       endTime: `${endTime}`,
       serviceName: this.serviceName,
@@ -215,7 +215,7 @@ export default class Metrics {
   async fetchRequestInfo(data) {
     const { startTime, endTime, qualifier, requestId } = data;
     const requestParams = {
-      regionId: this.regionId,
+      regionId: this.region,
       startTime: `${startTime}`,
       endTime: `${endTime}`,
       serviceName: this.serviceName,

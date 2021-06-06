@@ -4,12 +4,12 @@ exports.getTraceClicnt = exports.getSLSClient = exports.getCmsClient = exports.g
 const Core = require('@alicloud/pop-core');
 const FC = require('@alicloud/fc2');
 const ALY = require('aliyun-sdk');
-exports.getFcClient = (credentials, regionId) => {
+exports.getFcClient = (credentials, region) => {
     return new FC(credentials.AccountID, {
         accessKeyID: credentials.AccessKeyID,
         accessKeySecret: credentials.AccessKeySecret,
-        region: regionId,
-        timeout: 10000000,
+        region: region,
+        timeout: 60000,
     });
 };
 exports.getCmsClient = (credentials) => {
@@ -20,19 +20,19 @@ exports.getCmsClient = (credentials) => {
         apiVersion: '2019-01-01',
     });
 };
-exports.getSLSClient = (credentials, regionId) => {
+exports.getSLSClient = (credentials, region) => {
     return new ALY.SLS({
         accessKeyId: credentials.AccessKeyID,
         secretAccessKey: credentials.AccessKeySecret,
-        endpoint: "http://" + regionId + ".log.aliyuncs.com",
+        endpoint: "http://" + region + ".log.aliyuncs.com",
         apiVersion: '2015-06-01'
     });
 };
-exports.getTraceClicnt = (credentials, regionId) => {
+exports.getTraceClicnt = (credentials, region) => {
     return new Core({
         accessKeyId: credentials.AccessKeyID,
         accessKeySecret: credentials.AccessKeySecret,
-        endpoint: 'https://xtrace.' + regionId + '.aliyuncs.com',
+        endpoint: 'https://xtrace.' + region + '.aliyuncs.com',
         apiVersion: '2019-08-08'
     });
 };

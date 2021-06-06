@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Icon, Grid, Table} from '@ali/wind';
+import { Icon, Grid, Table } from '@ali/wind';
 import intl from '@ali/wind-intl';
 import Link from '@ali/wind-rc-link';
 import { isEmpty } from 'lodash';
 import { UserContext } from '../../context';
 import { getRequestTableList } from '../../request';
-import { momentFormat, TableColStyle } from  '../LineChart/Chart/helper'
+import { momentFormat, TableColStyle } from '../LineChart/Chart/helper'
 
 import './index.css';
 
@@ -16,7 +16,7 @@ export default () => {
     const { config } = useContext(UserContext);
     const [tableList, setTableList] = useState([]);
     const [tablelistLoading, setTablelistLoading] = useState(false);
-  //  const [isShowLogArea, setShowLogArea] = useState(false);
+    //  const [isShowLogArea, setShowLogArea] = useState(false);
     useEffect(() => {
         if (!isEmpty(config)) {
             setTablelistLoading(true);
@@ -30,29 +30,29 @@ export default () => {
         setTableList(tableData);
         console.log('tableData', tableData);
     };
-    
+
     //获取table列中,函数执行的状态图标
     function getIconInfo(value) {
         if (!value) {
-          return (
-            <span>
-              <Icon type="check" size="small" style={{ color: "#0BB27B" }} />
-              <label style={{ marginLeft: 8, verticalAlign: 'middle' }}>{intl.html('fc.dashboard.success')}</label>
-            </span>
-          )
+            return (
+                <span>
+                    <Icon type="check" size="small" style={{ color: "#0BB27B" }} />
+                    <label style={{ marginLeft: 8, verticalAlign: 'middle' }}>{intl.html('fc.dashboard.success')}</label>
+                </span>
+            )
         } else {
-          return (
-            <span>
-              <Icon type="warning" size="small" style={{ color: "#D93026" }} />
-              <label style={{ marginLeft: 8, verticalAlign: 'middle' }}>{value}</label>
-            </span>
-          )
+            return (
+                <span>
+                    <Icon type="warning" size="small" style={{ color: "#D93026" }} />
+                    <label style={{ marginLeft: 8, verticalAlign: 'middle' }}>{value}</label>
+                </span>
+            )
         }
-      }
-    
+    }
 
-    function getColumns(){
-        const {  endTime = 0, startTime=0, qualifier='LATEST', recent='hour'} = {...config};
+
+    function getColumns() {
+        const { endTime = 0, startTime = 0, qualifier = 'LATEST', recent = 'hour' } = { ...config };
 
         return [
             {
@@ -82,7 +82,6 @@ export default () => {
                 title: intl('fc.dashboard.function.time'),
                 dataIndex: '__time__',
                 cell: (value) => momentFormat(Number(value) * 1000),
-                sortable: true,
             },
             {
                 key: 'durationMs',
@@ -93,14 +92,12 @@ export default () => {
                     const { contentWidth, contentWidthNumber } = record || {};
                     return TableColStyle(value, contentWidth, contentWidthNumber);
                 },
-                sortable: true,
             },
             {
                 key: 'memoryUsageMB',
                 title: `${intl('fc.dashboard.function.memoryUsageMB')}`,
                 dataIndex: 'memoryUsageMB',
                 width: 200,
-                sortable: true,
                 cell: (value, index, record) => {
                     const { contentMemoryWidth, contentMemoryWidthNumber } = record || {};
                     return TableColStyle(value, contentMemoryWidth, contentMemoryWidthNumber);
@@ -152,7 +149,7 @@ export default () => {
                     primaryKey="requestId"
                     loading={tablelistLoading}
                 >
-                     {columns && columns.map((col, key) => <Column {...col} key={key} />)}
+                    {columns && columns.map((col, key) => <Column {...col} key={key} />)}
                 </Table>
             </Col>
         </Row>

@@ -5,7 +5,7 @@ export interface ICredentials {
     SecurityToken?: string;
 }
 export interface IProperties {
-    regionId: string;
+    region: string;
     serviceName: string;
     functionName: string;
 }

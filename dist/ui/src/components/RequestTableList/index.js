@@ -107,7 +107,6 @@ exports.default = () => {
                 title: wind_intl_1.default('fc.dashboard.function.time'),
                 dataIndex: '__time__',
                 cell: (value) => helper_1.momentFormat(Number(value) * 1000),
-                sortable: true,
             },
             {
                 key: 'durationMs',
@@ -118,14 +117,12 @@ exports.default = () => {
                     const { contentWidth, contentWidthNumber } = record || {};
                     return helper_1.TableColStyle(value, contentWidth, contentWidthNumber);
                 },
-                sortable: true,
             },
             {
                 key: 'memoryUsageMB',
                 title: `${wind_intl_1.default('fc.dashboard.function.memoryUsageMB')}`,
                 dataIndex: 'memoryUsageMB',
                 width: 200,
-                sortable: true,
                 cell: (value, index, record) => {
                     const { contentMemoryWidth, contentMemoryWidthNumber } = record || {};
                     return helper_1.TableColStyle(value, contentMemoryWidth, contentMemoryWidthNumber);

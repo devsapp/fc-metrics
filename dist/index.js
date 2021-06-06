@@ -33,7 +33,7 @@ class MetricsComponent {
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.info('Create Metrics start...');
             const prop = inputs === null || inputs === void 0 ? void 0 : inputs.props;
-            const region = prop.regionId;
+            const region = prop.region;
             const serviceName = prop.serviceName;
             const functionName = prop.functionName;
             if (!region) {

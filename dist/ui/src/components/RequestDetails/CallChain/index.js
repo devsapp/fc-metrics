@@ -44,8 +44,8 @@ class Detail extends react_1.Component {
         const functionName = splitStr[1] || '';
         const value = item.Value || '';
         var path = {
-            pathname: `/fc/dashboard/${regionId}/${serviceName}/${functionName}/${value}?startTime=${startTime}&endTime=${endTime}&qualifier=${qualifier}`,
-            search: `?startTime=${startTime}&endTime=${endTime}&qualifier=${qualifier}`
+            pathname: `/details`,
+            search: `?requestId=${value}&startTime=${startTime}&endTime=${endTime}&qualifier=${qualifier}`
         };
         return (react_1.default.createElement("a", { href: path.pathname, target: "_blank" },
             "  ",
@@ -56,7 +56,7 @@ class Detail extends react_1.Component {
             react_1.default.createElement("table", { className: "mini-table" },
                 react_1.default.createElement("tbody", null, data.map((item, i) => (react_1.default.createElement("tr", { key: i },
                     react_1.default.createElement("td", { style: { width: 120 } }, item.Key),
-                    react_1.default.createElement("td", { style: { wordBreak: 'break-word' } }, item.Key === 'x-fc-request-id' && this.goto(item, ServiceName) || item.Value))))))));
+                    react_1.default.createElement("td", { style: { wordBreak: 'break-word' } }, item.Key === 'x-fc-request-id' && item.Value))))))));
     }
     getLogMap(data) {
         const keys = Object.keys(data).sort((a, b) => {
