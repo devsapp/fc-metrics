@@ -57,7 +57,7 @@ exports.METRICS_HELP_INFO = [
                 example: '$ s metrics',
             },
             {
-                example: '$ s exec -- metrics --region ch-hangzhou --service-name myService --function-name myFunction',
+                example: '$ s exec -- metrics --region cn-hangzhou --service-name myService --function-name myFunction',
             },
         ],
     },
@@ -65,7 +65,7 @@ exports.METRICS_HELP_INFO = [
         header: 'Examples with CLI',
         content: [
             {
-                example: '$ s cli fc metrics --region ch-hangzhou --service-name myService --function-name myFunction',
+                example: '$ s cli fc metrics --region cn-hangzhou --service-name myService --function-name myFunction -a myAccess',
             },
         ],
     },

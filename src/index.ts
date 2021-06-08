@@ -16,7 +16,6 @@ export default class MetricsComponent {
     const prop: IProperties = inputs?.props;
     const access = inputs?.project?.access;
     const args: string = inputs?.args;
-    console.log('args',args)
     const comParse: any = commandParse({ args }, {
       boolean: ['help'],
       string: ['region', 'service-name', 'function-name'],
@@ -26,8 +25,6 @@ export default class MetricsComponent {
       help(METRICS_HELP_INFO);
       return;
     }
-    console.log('comParse',comParse)
-
     const getConfig = (argsParse, inputsProps) => {
       if (argsParse?.region) {
         return {
@@ -42,15 +39,12 @@ export default class MetricsComponent {
         functionName: inputsProps?.functionName,
       };
     };
-    console.log('getConfig',getConfig)
 
     const { region, serviceName, functionName } = getConfig(comParse, prop);
-    console.log(`[Metrics] region: ${region}, serviceName: ${serviceName}, functionName: ${functionName}, args: ${args}`)
-
     this.logger.debug(`[Metrics] region: ${region}, serviceName: ${serviceName}, functionName: ${functionName}, args: ${args}`);
     const credentials: ICredentials = await getCredential(access);
     await this.report('metrics', 'metrics', credentials.AccountID);
-    const metricsClient = new Metrics(prop, credentials);
+    const metricsClient = new Metrics({ region, serviceName, functionName }, credentials);
     const isFindFunction = await this.getFunction(credentials, region, serviceName, functionName);
     //当函数存在的情况下，启动查询metrics，否则Log写入错误
     if (isFindFunction) {
@@ -74,7 +68,10 @@ export default class MetricsComponent {
         this.logger.error(`不存在${serviceName} 下的${functionName}`);
         return false;
       }
-    })
+    }).catch(e => {
+      this.logger.error('方法不存在', e);
+      return false;
+    });
   }
 
   async report(componentName: string, command: string, accountID?: string, access?: string): Promise<void> {

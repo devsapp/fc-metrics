@@ -36,7 +36,6 @@ class MetricsComponent {
             const prop = inputs === null || inputs === void 0 ? void 0 : inputs.props;
             const access = (_a = inputs === null || inputs === void 0 ? void 0 : inputs.project) === null || _a === void 0 ? void 0 : _a.access;
             const args = inputs === null || inputs === void 0 ? void 0 : inputs.args;
-            console.log('args', args);
             const comParse = (_b = core_1.commandParse({ args }, {
                 boolean: ['help'],
                 string: ['region', 'service-name', 'function-name'],
@@ -46,7 +45,6 @@ class MetricsComponent {
                 core_1.help(help_1.METRICS_HELP_INFO);
                 return;
             }
-            console.log('comParse', comParse);
             const getConfig = (argsParse, inputsProps) => {
                 if (argsParse === null || argsParse === void 0 ? void 0 : argsParse.region) {
                     return {
@@ -61,13 +59,11 @@ class MetricsComponent {
                     functionName: inputsProps === null || inputsProps === void 0 ? void 0 : inputsProps.functionName,
                 };
             };
-            console.log('getConfig', getConfig);
             const { region, serviceName, functionName } = getConfig(comParse, prop);
-            console.log(`[Metrics] region: ${region}, serviceName: ${serviceName}, functionName: ${functionName}, args: ${args}`);
             this.logger.debug(`[Metrics] region: ${region}, serviceName: ${serviceName}, functionName: ${functionName}, args: ${args}`);
             const credentials = yield core_1.getCredential(access);
             yield this.report('metrics', 'metrics', credentials.AccountID);
-            const metricsClient = new metrics_1.default(prop, credentials);
+            const metricsClient = new metrics_1.default({ region, serviceName, functionName }, credentials);
             const isFindFunction = yield this.getFunction(credentials, region, serviceName, functionName);
             //当函数存在的情况下，启动查询metrics，否则Log写入错误
             if (isFindFunction) {
@@ -88,6 +84,9 @@ class MetricsComponent {
                     this.logger.error(`不存在${serviceName} 下的${functionName}`);
                     return false;
                 }
+            }).catch(e => {
+                this.logger.error('方法不存在', e);
+                return false;
             });
         });
     }
