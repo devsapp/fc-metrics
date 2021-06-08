@@ -36,6 +36,7 @@ class MetricsComponent {
             const prop = inputs === null || inputs === void 0 ? void 0 : inputs.props;
             const access = (_a = inputs === null || inputs === void 0 ? void 0 : inputs.project) === null || _a === void 0 ? void 0 : _a.access;
             const args = inputs === null || inputs === void 0 ? void 0 : inputs.args;
+            console.log('args', args);
             const comParse = (_b = core_1.commandParse({ args }, {
                 boolean: ['help'],
                 string: ['region', 'service-name', 'function-name'],
@@ -45,6 +46,7 @@ class MetricsComponent {
                 core_1.help(help_1.METRICS_HELP_INFO);
                 return;
             }
+            console.log('comParse', comParse);
             const getConfig = (argsParse, inputsProps) => {
                 if (argsParse === null || argsParse === void 0 ? void 0 : argsParse.region) {
                     return {
@@ -59,7 +61,9 @@ class MetricsComponent {
                     functionName: inputsProps === null || inputsProps === void 0 ? void 0 : inputsProps.functionName,
                 };
             };
+            console.log('getConfig', getConfig);
             const { region, serviceName, functionName } = getConfig(comParse, prop);
+            console.log(`[Metrics] region: ${region}, serviceName: ${serviceName}, functionName: ${functionName}, args: ${args}`);
             this.logger.debug(`[Metrics] region: ${region}, serviceName: ${serviceName}, functionName: ${functionName}, args: ${args}`);
             const credentials = yield core_1.getCredential(access);
             yield this.report('metrics', 'metrics', credentials.AccountID);

@@ -8,7 +8,7 @@ exports.METRICS_HELP_INFO = [
     },
     {
         header: 'Usage',
-        content: '$ s metrcis <options>',
+        content: '$ s metrics <options>',
     },
     {
         header: 'Options',
@@ -54,10 +54,10 @@ exports.METRICS_HELP_INFO = [
         header: 'Examples with Yaml',
         content: [
             {
-                example: '$ s metrcis',
+                example: '$ s metrics',
             },
             {
-                example: '$ exec -- metrics --region ch-hangzhou --service-name myService --function-name myFunction',
+                example: '$ s exec -- metrics --region ch-hangzhou --service-name myService --function-name myFunction',
             },
         ],
     },
@@ -65,7 +65,7 @@ exports.METRICS_HELP_INFO = [
         header: 'Examples with CLI',
         content: [
             {
-                example: '$  s cli fc metrics --region ch-hangzhou --service-name myService --function-name myFunction',
+                example: '$ s cli fc metrics --region ch-hangzhou --service-name myService --function-name myFunction',
             },
         ],
     },

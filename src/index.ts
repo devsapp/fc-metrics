@@ -16,6 +16,7 @@ export default class MetricsComponent {
     const prop: IProperties = inputs?.props;
     const access = inputs?.project?.access;
     const args: string = inputs?.args;
+    console.log('args',args)
     const comParse: any = commandParse({ args }, {
       boolean: ['help'],
       string: ['region', 'service-name', 'function-name'],
@@ -25,6 +26,8 @@ export default class MetricsComponent {
       help(METRICS_HELP_INFO);
       return;
     }
+    console.log('comParse',comParse)
+
     const getConfig = (argsParse, inputsProps) => {
       if (argsParse?.region) {
         return {
@@ -39,8 +42,11 @@ export default class MetricsComponent {
         functionName: inputsProps?.functionName,
       };
     };
+    console.log('getConfig',getConfig)
 
     const { region, serviceName, functionName } = getConfig(comParse, prop);
+    console.log(`[Metrics] region: ${region}, serviceName: ${serviceName}, functionName: ${functionName}, args: ${args}`)
+
     this.logger.debug(`[Metrics] region: ${region}, serviceName: ${serviceName}, functionName: ${functionName}, args: ${args}`);
     const credentials: ICredentials = await getCredential(access);
     await this.report('metrics', 'metrics', credentials.AccountID);
