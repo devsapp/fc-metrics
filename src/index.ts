@@ -1,6 +1,7 @@
-import { HLogger, ILogger, getCredential, reportComponent } from '@serverless-devs/core';
+import { HLogger, ILogger, getCredential, reportComponent, commandParse, help } from '@serverless-devs/core';
 import _ from 'lodash';
 import { CONTEXT } from './constant';
+import { METRICS_HELP_INFO } from './help';
 import { ICredentials, IProperties } from './interface';
 import Metrics from './utils/metrics';
 import { getFcClient } from './utils/client';
@@ -13,21 +14,34 @@ export default class MetricsComponent {
   async metrics(inputs) {
     this.logger.info('Create Metrics start...');
     const prop: IProperties = inputs?.props;
-    const region: string = prop.region;
-    const serviceName: string = prop.serviceName;
-    const functionName: string = prop.functionName;
-    if (!region) {
-      this.logger.error(`region is empty.`);
-    }
-    if (!serviceName) {
-      this.logger.error(`serviceName is empty.`);
-    }
-    if (!functionName) {
-      this.logger.error(`functionName is empty.`);
-    }
-
-    this.logger.debug(`获取入参:inputs params: ${JSON.stringify(prop)}`);
     const access = inputs?.project?.access;
+    const args: string = inputs?.args;
+    const comParse: any = commandParse({ args }, {
+      boolean: ['help'],
+      string: ['region', 'service-name', 'function-name'],
+      alias: { help: 'h' }
+    })?.data;
+    if (comParse?.help) {
+      help(METRICS_HELP_INFO);
+      return;
+    }
+    const getConfig = (argsParse, inputsProps) => {
+      if (argsParse?.region) {
+        return {
+          region: argsParse.region,
+          serviceName: argsParse['service-name'],
+          functionName: argsParse['function-name'],
+        };
+      }
+      return {
+        region: inputsProps?.region,
+        serviceName: inputsProps?.serviceName,
+        functionName: inputsProps?.functionName,
+      };
+    };
+
+    const { region, serviceName, functionName } = getConfig(comParse, prop);
+    this.logger.debug(`[Metrics] region: ${region}, serviceName: ${serviceName}, functionName: ${functionName}, args: ${args}`);
     const credentials: ICredentials = await getCredential(access);
     await this.report('metrics', 'metrics', credentials.AccountID);
     const metricsClient = new Metrics(prop, credentials);

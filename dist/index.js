@@ -24,29 +24,43 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@serverless-devs/core");
 const lodash_1 = __importDefault(require("lodash"));
 const constant_1 = require("./constant");
+const help_1 = require("./help");
 const metrics_1 = __importDefault(require("./utils/metrics"));
 const client_1 = require("./utils/client");
 class MetricsComponent {
     //组件入口函数  
     metrics(inputs) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             this.logger.info('Create Metrics start...');
             const prop = inputs === null || inputs === void 0 ? void 0 : inputs.props;
-            const region = prop.region;
-            const serviceName = prop.serviceName;
-            const functionName = prop.functionName;
-            if (!region) {
-                this.logger.error(`region is empty.`);
-            }
-            if (!serviceName) {
-                this.logger.error(`serviceName is empty.`);
-            }
-            if (!functionName) {
-                this.logger.error(`functionName is empty.`);
-            }
-            this.logger.debug(`获取入参:inputs params: ${JSON.stringify(prop)}`);
             const access = (_a = inputs === null || inputs === void 0 ? void 0 : inputs.project) === null || _a === void 0 ? void 0 : _a.access;
+            const args = inputs === null || inputs === void 0 ? void 0 : inputs.args;
+            const comParse = (_b = core_1.commandParse({ args }, {
+                boolean: ['help'],
+                string: ['region', 'service-name', 'function-name'],
+                alias: { help: 'h' }
+            })) === null || _b === void 0 ? void 0 : _b.data;
+            if (comParse === null || comParse === void 0 ? void 0 : comParse.help) {
+                core_1.help(help_1.METRICS_HELP_INFO);
+                return;
+            }
+            const getConfig = (argsParse, inputsProps) => {
+                if (argsParse === null || argsParse === void 0 ? void 0 : argsParse.region) {
+                    return {
+                        region: argsParse.region,
+                        serviceName: argsParse['service-name'],
+                        functionName: argsParse['function-name'],
+                    };
+                }
+                return {
+                    region: inputsProps === null || inputsProps === void 0 ? void 0 : inputsProps.region,
+                    serviceName: inputsProps === null || inputsProps === void 0 ? void 0 : inputsProps.serviceName,
+                    functionName: inputsProps === null || inputsProps === void 0 ? void 0 : inputsProps.functionName,
+                };
+            };
+            const { region, serviceName, functionName } = getConfig(comParse, prop);
+            this.logger.debug(`[Metrics] region: ${region}, serviceName: ${serviceName}, functionName: ${functionName}, args: ${args}`);
             const credentials = yield core_1.getCredential(access);
             yield this.report('metrics', 'metrics', credentials.AccountID);
             const metricsClient = new metrics_1.default(prop, credentials);
