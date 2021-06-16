@@ -41,7 +41,7 @@ class StartService {
             this.counter += 1;
             this.server = this.app.listen(this.port, () => {
                 const uri = `http://localhost:${this.port}`;
-                this.logger.info(`请用浏览器访问Uri地址进行查看: ${uri}`);
+                this.logger.info(`Getting domain: ${uri}, 请用浏览器访问Uri地址进行查看`);
                 if (this.context.openBrowser) {
                     switch (process.platform) {
                         case "darwin":

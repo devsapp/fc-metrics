@@ -39,14 +39,11 @@ export default class Metrics {
   async getService(tableParams) {
     const { serviceName, qualifier } = tableParams || {};
     try {
-      this.logger.debug('this.fcClientparams', serviceName, qualifier);
+      this.logger.debug('Get: fcClient 入参', serviceName, qualifier);
       var service = await this.fcClient.getService(serviceName, {}, qualifier);
-      this.logger.debug('service', service);
       return service.data.logConfig
     } catch (e) {
-      this.logger.debug("An error occured when get service")
-      this.logger.debug('this.fcClientparams', serviceName, qualifier);
-      // try again
+      this.logger.debug("Fail: An error occured when get service", serviceName, qualifier)
       var service = await this.fcClient.getService(serviceName, {}, qualifier);
       return service.data.logConfig
     }
@@ -152,11 +149,10 @@ export default class Metrics {
       qualifier,
     };
 
-    this.logger.debug(`${metric} api params: ${JSON.stringify(params)}`);
     return await this.cmsClient.request('DescribeMetricList', params, { method: 'POST' }).then((result) => {
       return result.Datapoints && JSON.parse(result.Datapoints) || null;
     }).catch((e) => {
-      this.logger.error(`/get/metric: ${this.functionName}下的${metric}获取metrics图表出错,${e}`);
+      this.logger.debug(`Fail: 获取metrics,${metric}图表出错,Api params: ${JSON.stringify(params)},错误信息:${e}`);
     });
   }
 
@@ -171,7 +167,6 @@ export default class Metrics {
       method: 'POST',
     };
     return await this.getTraceClicnt.request('GetTrace', args, requestOption).then((result) => {
-      // console.log(JSON.stringify(result));
       const res = {
         "data": result,
         "success": true,
@@ -205,8 +200,8 @@ export default class Metrics {
 
     return await this.describeFunctionInsights(tableListParams).then(function (data) {
       return data;
-    }).catch(function (e) {
-      console.log("An error occurred when describeFunctionInsights", e)
+    }).catch((e) => {
+      this.logger.error(`Fail: An error occurred when describeFunctionInsights`, e);
       return e;
     });
   }
@@ -226,64 +221,15 @@ export default class Metrics {
 
     return await this.describeRequestInsights(requestParams).then(function (data) {
       return data;
-    }).catch(function (e) {
-      console.log("An error occurred when describeRequestInsights", e)
+    }).catch((e) => {
+      this.logger.error(`Fail: An error occurred when describeRequestInsights`, e);
       return e;
     });
   }
 
-  //获取请求详情日志
-  // async fetchLogs(params) {
-  //   const { startTime, endTime, qualifier, requestId } = params;
-  //   const endpoint = this.regionId + ".log.aliyuncs.com";
-  //   const request_id = requestId;
-  //   const function_name = this.functionName;
-  //   const start_time = Number(startTime) / 1000;
-  //   const end_time = Number(endTime) / 1000;
-  //   const log_config = get_logconfig(params);
-  //   const logstore = log_config["logstore"];
-  //   const project = log_config["project"];
-  //   if (!logstore || !project) {
-  //     const result = {
-  //       "data": 'LogConfigNotSetException',
-  //       "success": false,
-  //       "errorMsg": 'LogConfigNotSetException' + ": Please set logConfig and try again",
-  //       "errorStack": ""
-  //     }
-  //     return json.dumps(result)
-  //   }
-  //   const client = LogClient(endpoint, this.accessKeyID, this.accessKeySecret, "");
-  // }
-
-  // async get_logconfig(params) {
-  //   if ("project" in params.keys() && "logstore" in params.keys()) {
-  //     const project = params["project"];
-  //     const logstore = params["logstore"];
-  //     return {
-  //       "project": project,
-  //       "logstore": logstore
-  //     }
-  //   }
-
-  //   const region_id = this.regionId;
-  //   const endpoint = "https://{0}.{1}.fc.aliyuncs.com".format(this.accountId, region_id)
-  //   const service_name = this.serviceName;
-  //   let qualifier = "LATEST";
-  //   if ("qualifier" in params.keys() && params["qualifier"] != "ALL") {
-  //     qualifier = params["qualifier"];
-  //   }
-  //   const client = fc2.Client({
-  //     endpoint,
-  //     accessKeyID: this.accessKeyID,
-  //     accessKeySecret: this.accessKeySecret,
-  //   });
-  //   const service = client.get_service({ serviceName: service_name, qualifier, })
-  //   return service.data["logConfig"]
-  // }
-
   async start() {
     const uri = path.join(__dirname, 'static')
-    this.logger.debug(`uri path: ${JSON.stringify(uri)}`);
+    this.logger.debug(`Get File path: ${JSON.stringify(uri)}`);
     const that: any = this;
     function callback(app) {
       app.use(bodyParser.json());
@@ -384,7 +330,7 @@ export default class Metrics {
       });
 
       app.get('/get/version', async (req, res) => {
-        that.logger.info('Get /get/version Request');
+        that.logger.debug('Get: /get/version Request start');
         try {
           const list = await that.fcClient.listVersions(that.serviceName);
           const resp = {
@@ -395,12 +341,12 @@ export default class Metrics {
           res.send(resp);
         } catch (e) {
           res.send({ success: false, error: true, message: e.message })
-          that.logger.error(`/get/version: ${that.serviceName}获取服务版本出错`);
+          that.logger.error(`Fail: /get/version: ${that.serviceName}获取服务版本出错`);
         }
       })
 
       app.get('/get/alias', async (req, res) => {
-        that.logger.info('Get /get/alias Request')
+        that.logger.debug('Get: /get/alias Request')
         try {
           const list = await that.fcClient.listAliases(that.serviceName);
           const resp = {
@@ -411,12 +357,11 @@ export default class Metrics {
           res.send(resp);
         } catch (e) {
           res.send({ success: false, error: true, message: e.message })
-          that.logger.error(`/get/alias: ${that.serviceName}获取服务别名出错`);
+          that.logger.error(`Fail: /get/alias: ${that.serviceName}获取服务别名出错`);
         }
       })
 
       app.get('/', (req, res) => {
-        that.logger.info(`Get Express - ${req}`);
         res.header('Content-Type', 'text/html;charset=utf-8');
         res.sendFile(path.join(__dirname, '../../dist/static'));
       });

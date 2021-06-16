@@ -12,7 +12,7 @@ export default class MetricsComponent {
 
   //组件入口函数  
   async metrics(inputs) {
-    this.logger.info('Create Metrics start...');
+    this.logger.info('Creating serivce: Metrics start...');
     const prop: IProperties = inputs?.props;
     const access = inputs?.project?.access;
     const args: string = inputs?.args;
@@ -43,7 +43,7 @@ export default class MetricsComponent {
     const { region, serviceName, functionName } = getConfig(comParse, prop);
     this.logger.debug(`[Metrics] region: ${region}, serviceName: ${serviceName}, functionName: ${functionName}, args: ${args}`);
     const credentials: ICredentials = await getCredential(access);
-    await this.report('metrics', 'metrics', credentials.AccountID);
+    await this.report('fc-metrics', 'metrics', credentials.AccountID);
     const metricsClient = new Metrics({ region, serviceName, functionName }, credentials);
     const isFindFunction = await this.getFunction(credentials, region, serviceName, functionName);
     //当函数存在的情况下，启动查询metrics，否则Log写入错误
@@ -62,14 +62,14 @@ export default class MetricsComponent {
     const fcClient = getFcClient(credentials, region);
     return await fcClient.getFunction(serviceName, functionName).then(res => {
       if (res && res.data) {
-        this.logger.info(`存在Servics:${serviceName},Function:${functionName}`);
+        this.logger.debug(`Get yml或者command入参:${serviceName},${functionName}`);
         return true;
       } else {
-        this.logger.error(`不存在${serviceName} 下的${functionName}`);
+        this.logger.warn(`Reminder yml || command args, 不存在${serviceName} 下的${functionName},请检查yml文件配置或者命令行入参`);
         return false;
       }
     }).catch(e => {
-      this.logger.error('方法不存在', e);
+      this.logger.warn('Reminder yml || command args, 方法不存在,请检查yml文件配置或者命令行入参', e);
       return false;
     });
   }
