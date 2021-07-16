@@ -46,7 +46,7 @@ exports.default = () => {
     const { config } = react_1.useContext(context_1.UserContext);
     const [tableList, setTableList] = react_1.useState([]);
     const [tablelistLoading, setTablelistLoading] = react_1.useState(false);
-    //  const [isShowLogArea, setShowLogArea] = useState(false);
+    const [isShowLogArea, setShowLogArea] = react_1.useState(false);
     react_1.useEffect(() => {
         if (!lodash_1.isEmpty(config)) {
             setTablelistLoading(true);
@@ -55,10 +55,13 @@ exports.default = () => {
     }, [config]);
     function getTableList() {
         return __awaiter(this, void 0, void 0, function* () {
-            const tableData = yield request_1.getRequestTableList(Object.assign({}, config));
+            const res = yield request_1.getRequestTableList(Object.assign({}, config));
             setTablelistLoading(false);
-            setTableList(tableData);
-            console.log('tableData', tableData);
+            setTableList(res.tableData);
+            if (res.RequestMetricsNotEnable) {
+                setShowLogArea(true);
+            }
+            console.log('tableData', res);
         });
     }
     ;
@@ -152,6 +155,12 @@ exports.default = () => {
     console.log('configisShowLogArea', config);
     return (react_1.default.createElement(Row, null,
         react_1.default.createElement(Col, { span: 24 },
-            react_1.default.createElement(wind_1.Table, { dataSource: tableList, hasBorder: false, primaryKey: "requestId", loading: tablelistLoading }, columns && columns.map((col, key) => react_1.default.createElement(Column, Object.assign({}, col, { key: key })))))));
+            isShowLogArea && (react_1.default.createElement("div", { className: 'applyLogWraper' },
+                react_1.default.createElement("h2", { style: { paddingTop: '20px' } }, '推荐您开通RequestMetrics以便查询函数级别指标'),
+                react_1.default.createElement("div", { style: { textAlign: 'center' } },
+                    react_1.default.createElement("div", { style: { paddingBottom: '20px', fontSize: '14px' } },
+                        react_1.default.createElement("a", { href: 'https://fc.console.aliyun.com/' }, " \u53BB\u5F80FC\u63A7\u5236\u53F0\u670D\u52A1\u53CA\u51FD\u6570\u4E0B\u7684\u670D\u52A1\u914D\u7F6E\u8FDB\u884C\b\u5F00\u901A\uFF0C\u6216\u8005\u8054\u7CFB\u51FD\u6570\u8BA1\u7B97\u56E2\u961F ")),
+                    react_1.default.createElement("img", { width: '85%%', style: { margin: '0 auto' }, src: "https://fc-dashboard.oss-cn-hangzhou.aliyuncs.com/images/icon/functionLog.png" })))),
+            !isShowLogArea && (react_1.default.createElement(wind_1.Table, { dataSource: tableList, hasBorder: false, primaryKey: "requestId", loading: tablelistLoading }, columns && columns.map((col, key) => react_1.default.createElement(Column, Object.assign({}, col, { key: key }))))))));
 };
 //# sourceMappingURL=index.js.map

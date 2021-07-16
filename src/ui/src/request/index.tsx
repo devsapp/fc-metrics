@@ -37,14 +37,18 @@ const getRequestTableList = async (params) => {
       withCredentials: true,
     });
     const { data } = result || {};
-    if (data.success === true && !result.data.errorMsg) {
-      return transFunctionTable(data.data);
+    if (data.success === true) {
+      if (data.data.errorCode === 'RequestMetricsNotEnable') {
+        return { RequestMetricsNotEnable: true, tableData: [] };
+      } else {
+        return { RequestMetricsNotEnable: false, tableData: transFunctionTable(data.data) };
+      }
     }
-    Message.error(`Metric Function 请求失败。`);
-    return [];
+    Message.error(`Metric Function 请求失败:  ${data.toString()}`);
+    return { RequestMetricsNotEnable: false, tableData: [] };
   } catch (e) {
     Message.error(`Metric Function 请求失败:  ${e.toString()}`);
-    return [];
+    return { RequestMetricsNotEnable: false, tableData: [] };
   }
 };
 
@@ -62,7 +66,7 @@ const getRequestInfo = async (params) => {
     });
     const { data } = result || {};
     if (data.success === true && !result.data.errorMsg) {
-      console.log('getRequestInfodata',data);
+      console.log('getRequestInfodata', data);
       return data.data
     }
     Message.error(`getRequestInfo 请求失败。`);

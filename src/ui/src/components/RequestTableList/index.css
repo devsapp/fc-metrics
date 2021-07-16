@@ -20,3 +20,18 @@
     font-size: 30px;
     font-family: SourceHanSansSC-regular;
   }
+
+  .applyLogWraper{
+    text-align: center;
+    margin: 0 auto;
+    background: rgb(247, 247, 247);
+  }
+
+  .applyLogWraper .button{
+    width: 120px;
+  }
+
+  .applyLogWraper .img{
+    width: 85%;
+    margin-top: 16px;
+  }
