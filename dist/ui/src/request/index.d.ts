@@ -1,8 +1,5 @@
 declare const getMetricData: (params: any) => Promise<any>;
-declare const getRequestTableList: (params: any) => Promise<{
-    RequestMetricsNotEnable: boolean;
-    tableData: any[];
-}>;
+declare const getRequestTableList: (params: any) => Promise<any[]>;
 declare const getRequestInfo: (params: any) => Promise<any>;
 declare const getTraceData: (params: any) => Promise<any>;
 declare const getVersion: () => Promise<any>;
