@@ -1,6 +1,6 @@
 {
   "name": "fc-metrics",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "./dist/index.js",
   "dependencies": {
     "@alicloud/fc2": "^2.2.2",
