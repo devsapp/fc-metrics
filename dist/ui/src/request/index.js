@@ -50,15 +50,20 @@ const getRequestTableList = (params) => __awaiter(void 0, void 0, void 0, functi
             withCredentials: true,
         });
         const { data } = result || {};
-        if (data.success === true && !result.data.errorMsg) {
-            return helper_1.transFunctionTable(data.data);
+        if (data.success === true) {
+            if (data.data.errorCode === 'RequestMetricsNotEnable') {
+                return { RequestMetricsNotEnable: true, tableData: [] };
+            }
+            else {
+                return { RequestMetricsNotEnable: false, tableData: helper_1.transFunctionTable(data.data) };
+            }
         }
-        console_components_1.Message.error(`Metric Function 请求失败。`);
-        return [];
+        console_components_1.Message.error(`Metric Function 请求失败:  ${data.toString()}`);
+        return { RequestMetricsNotEnable: false, tableData: [] };
     }
     catch (e) {
         console_components_1.Message.error(`Metric Function 请求失败:  ${e.toString()}`);
-        return [];
+        return { RequestMetricsNotEnable: false, tableData: [] };
     }
 });
 exports.getRequestTableList = getRequestTableList;
