@@ -59,7 +59,7 @@ export default class MetricsComponent {
     serviceName: string,
     functionName: string
   ): Promise<Boolean> {
-    const fcClient = getFcClient(credentials, region);
+    const fcClient = await getFcClient(credentials, region);
     return await fcClient.getFunction(serviceName, functionName).then(res => {
       if (res && res.data) {
         this.logger.debug(`Get yml或者command入参:${serviceName},${functionName}`);
