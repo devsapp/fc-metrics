@@ -5,7 +5,7 @@
   "dependencies": {
     "@alicloud/fc2": "^2.2.2",
     "@alicloud/log": "^1.1.0",
-    "aliyun-sdk":"1.12.3",
+    "aliyun-sdk": "1.12.3",
     "@alicloud/pop-core": "^1.7.10",
     "@serverless-devs/core": "0.0.*",
     "body-parser": "^1.19.0",

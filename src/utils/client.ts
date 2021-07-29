@@ -1,13 +1,24 @@
+import * as core from '@serverless-devs/core';
 import { ICredentials } from '../interface';
 const Core = require('@alicloud/pop-core');
 const FC = require('@alicloud/fc2');
 const ALY = require('aliyun-sdk');
 
-export const getFcClient = (credentials: ICredentials, region: string) => {
+async function getFcEndpoint(): Promise<string | undefined> {
+  const fcDefault = await core.loadComponent('devsapp/fc-default');
+  const fcEndpoint: string = await fcDefault.get({ args: 'fc-endpoint' });
+  if (!fcEndpoint) { return undefined; }
+  const enableFcEndpoint: any = await fcDefault.get({ args: 'enable-fc-endpoint' });
+  return (enableFcEndpoint === true || enableFcEndpoint === 'true') ? fcEndpoint : undefined;
+}
+
+export const getFcClient = async (credentials: ICredentials, region: string) => {
   return new FC(credentials.AccountID, {
+    region,
+    endpoint: await getFcEndpoint(),
     accessKeyID: credentials.AccessKeyID,
     accessKeySecret: credentials.AccessKeySecret,
-    region: region,
+    securityToken: credentials.SecurityToken,
     timeout: 60000,
   });
 };
