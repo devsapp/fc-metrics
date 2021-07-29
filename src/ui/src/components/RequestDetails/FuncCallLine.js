@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Table, Step, Balloon } from "@ali/wind";
-import intl from '@ali/wind-intl';
+import { Table, Step, Balloon } from "@alicloud/console-components";
+import { intl } from '../../utils/handlerChartData';
 import style from './index.scoped.less';
 import CallChain from './CallChain';
 

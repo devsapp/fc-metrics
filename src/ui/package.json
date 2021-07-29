@@ -11,13 +11,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@ali/midfe-tree-grid": "^1.0.3",
-    "@ali/wind": "^2.0.0",
-    "@ali/wind-intl": "^2.6.4",
-    "@ali/wind-rc-link": "3.0.0",
     "@alicloud/console-components": "^1.2.0",
     "@alicloud/console-components-page": "^1.0.14",
-    "@ali/wind-rc-page": "^3.0.0",
     "@antv/data-set": "^0.11.7",
     "@babel/core": "^7.0.0-beta.47",
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.47",

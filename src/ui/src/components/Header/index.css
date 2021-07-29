@@ -17,6 +17,7 @@
   
   .header .header-title {
     color: rgba(16, 16, 16, 100);
-    font-size: 30px;
+    font-size: 24px;
+    padding-left: 40px;
     font-family: SourceHanSansSC-regular;
   }

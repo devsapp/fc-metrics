@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Chart, LineAdvance, Axis, Legend, Tooltip } from 'bizcharts';
 import _ from 'lodash';
-import { Grid, Loading } from '@ali/wind';
+import { Grid, Loading } from '@alicloud/console-components';
 import moment from 'moment';
 import { publicComputeUnit, metricLegendListAll, isEnLanguage } from './helper';
 

@@ -1,3 +1,4 @@
+/// <reference types="react" />
 export declare const mapTargetTOALL: {
     ServiceQualifierTotalInvocations: string;
     ServiceQualifierServerErrors: string;

@@ -1,3 +1,4 @@
+import localMessage from '../locales/messages';
 const moment = require('moment');
 
 const keepDecimal = (value) => Math.floor(value * 100) / 100;
@@ -67,4 +68,8 @@ export function handlerData(resultPromissList = [], metricNameList = [], params)
     delete values[currentTime];
   }
   return chartData;
+}
+
+export function intl(str:string) {
+  return localMessage[str];
 }

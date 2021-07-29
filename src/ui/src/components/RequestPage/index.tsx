@@ -1,26 +1,17 @@
 
 import React, { Component } from 'react';
-import Page from '@ali/wind-rc-page';
+import Page from '@alicloud/console-components-page';
+import { Link } from 'react-router-dom';
 import Details from '../RequestDetails/index';
 import '../RequestDetails/index.scoped.less';
 
 class RequestInfo extends Component {
 
     render() {
-        const historyBack = {
-            pathname: `/`,
-            state: {},
-            search: ``,
-        }
         return (
             <Page>
-                <Page.Nav />
-                <Page.Title
-                    historyBack={historyBack}
-                    text={<span>返回</span>}
-                    childrenAlign="right"
-                />
                 <Page.Content>
+                    <Link style={{fontSize:'14px'}} to='/'> {`<-- 返回`}</Link>
                     <Details />
                 </Page.Content>
             </Page>

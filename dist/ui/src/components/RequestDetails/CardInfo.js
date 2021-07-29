@@ -5,26 +5,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
 const prop_types_1 = __importDefault(require("prop-types"));
-const wind_1 = require("@ali/wind");
-const wind_intl_1 = __importDefault(require("@ali/wind-intl"));
+const console_components_1 = require("@alicloud/console-components");
+const handlerChartData_1 = require("../../utils/handlerChartData");
 require("./index.scoped.less");
 //获取每个card对应的title
 function getCardArrInfo() {
     return [
         {
-            title: `${wind_intl_1.default('fc.dashboard.execution.status')}`,
+            title: `${handlerChartData_1.intl('fc.dashboard.execution.status')}`,
             showTitleBullet: false,
             showHeadDivider: false,
         }, {
-            title: `${wind_intl_1.default('fc.dashboard.status.is.coldStart')}`,
+            title: `${handlerChartData_1.intl('fc.dashboard.status.is.coldStart')}`,
             showTitleBullet: false,
             showHeadDivider: false,
         }, {
-            title: `${wind_intl_1.default('fc.dashboard.function.execution.time')}`,
+            title: `${handlerChartData_1.intl('fc.dashboard.function.execution.time')}`,
             showTitleBullet: false,
             showHeadDivider: false,
         }, {
-            title: `${wind_intl_1.default('fc.dashboard.memory.consumption')}`,
+            title: `${handlerChartData_1.intl('fc.dashboard.memory.consumption')}`,
             showTitleBullet: false,
             showHeadDivider: false,
         }
@@ -56,10 +56,10 @@ function hasColdStart(requestCardData) {
         const data = requestCardData[0] || {};
         const { isColdStart } = data;
         if (isColdStart === 'false') {
-            return wind_intl_1.default('fc.dashboard.no');
+            return handlerChartData_1.intl('fc.dashboard.no');
         }
         else {
-            return wind_intl_1.default('fc.dashboard.yse');
+            return handlerChartData_1.intl('fc.dashboard.yse');
         }
     }
     return '';
@@ -84,24 +84,24 @@ function getMemoryUsageMB(requestCardData) {
 }
 function CardInfo(props) {
     const { requestCardData } = props;
-    const { Row, Col } = wind_1.Grid;
+    const { Row, Col } = console_components_1.Grid;
     const commonPropsArr = getCardArrInfo();
     const execuStatus = getExecuStaus(requestCardData) || {};
     return (react_1.default.createElement("div", { className: 'cardInfoWraper' },
-        react_1.default.createElement("h1", { className: 'color333' }, wind_intl_1.default('fc.dashboard.request.detail')),
+        react_1.default.createElement("h1", { className: 'color333' }, handlerChartData_1.intl('fc.dashboard.request.detail')),
         react_1.default.createElement(Row, null,
             react_1.default.createElement(Col, { key: 0 },
-                react_1.default.createElement(wind_1.Card, Object.assign({}, commonPropsArr[0], { contentHeight: "auto", className: `marginRight20 height100 ${execuStatus.color}` }),
+                react_1.default.createElement(console_components_1.Card, Object.assign({}, commonPropsArr[0], { contentHeight: "auto", className: `marginRight20 height100 ${execuStatus.color}` }),
                     react_1.default.createElement("div", { className: `customContent` },
                         react_1.default.createElement("div", { className: 'colorfff' }, execuStatus.code)))),
             react_1.default.createElement(Col, { key: 1 },
-                react_1.default.createElement(wind_1.Card, Object.assign({}, commonPropsArr[1], { contentHeight: "auto", className: `marginRight20 height100` }),
+                react_1.default.createElement(console_components_1.Card, Object.assign({}, commonPropsArr[1], { contentHeight: "auto", className: `marginRight20 height100` }),
                     react_1.default.createElement("div", { className: `customContent` }, hasColdStart(requestCardData)))),
             react_1.default.createElement(Col, { key: 2 },
-                react_1.default.createElement(wind_1.Card, Object.assign({}, commonPropsArr[2], { contentHeight: "auto", className: `marginRight20 height100` }),
+                react_1.default.createElement(console_components_1.Card, Object.assign({}, commonPropsArr[2], { contentHeight: "auto", className: `marginRight20 height100` }),
                     react_1.default.createElement("div", { className: `customContent` }, getDuration(requestCardData)))),
             react_1.default.createElement(Col, { key: 3 },
-                react_1.default.createElement(wind_1.Card, Object.assign({}, commonPropsArr[3], { contentHeight: "auto", className: `height100` }),
+                react_1.default.createElement(console_components_1.Card, Object.assign({}, commonPropsArr[3], { contentHeight: "auto", className: `height100` }),
                     react_1.default.createElement("div", { className: `customContent` }, getMemoryUsageMB(requestCardData)))))));
 }
 exports.default = CardInfo;

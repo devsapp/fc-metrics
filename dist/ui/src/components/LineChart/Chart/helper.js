@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WIDTH310 = exports.WIDTH230 = exports.WIDTH210 = exports.WIDTH200 = exports.WIDTH190 = exports.WIDTH164 = exports.WIDTH144 = exports.WIDTH130 = exports.WIDTH124 = exports.WIDTH100 = exports.WIDTH95 = exports.SIZEROW2 = exports.SIZEROW1 = exports.ISFUNCMETRICSACTIVE = exports.staticMockdataNew = exports.composeTree = exports.transTableInfo = exports.getTableData = exports.getExpandRow = exports.funcFunctionLegendList = exports.publicComputeUnit = exports.sessionCharNames = exports.chartsItemsInfo = exports.metricsfunFunctionLegendList = exports.metricsServicerRatesLegendList = exports.metricsServiceLegendList = exports.specUtilizationLegendList = exports.specConcurrentRealLegendList = exports.specErrorFunctionLegendList = exports.funFunctionItem = exports.chartsColors = exports.queryStringSearch = exports.isEmptyArray = exports.getDestination = exports.getMemory = exports.getTimeDuation = exports.getFunctionError = exports.getConcurrentRealColumn = exports.getFlowControl = exports.getFuncExecution = exports.staticDestinationData = exports.staticMemoryData = exports.staticTimesDurationData = exports.staticFuncErrorData = exports.staticConcurrentRealData = exports.staticFlowControlData = exports.staticfuncExecuData = exports.findEchartValue = exports.getEchartColor = exports.isEnLanguage = exports.getTransTableData = exports.getTransQualifier = exports.convertPoints = exports.formatPercent = exports.formatDuration = exports.formatBytes = exports.TableColStyle = exports.momentFormat = exports.getConfig = exports.intlNumberFormat = exports.aheadFrontForward = exports.getApiMetricsTaget = exports.transFunctionTable = exports.transChartData = exports.getMetricName = exports.metricLegendListAll = exports.mapTargetTOALL = void 0;
 const react_1 = __importDefault(require("react"));
-const wind_intl_1 = __importDefault(require("@ali/wind-intl"));
+const handlerChartData_1 = require("../../../utils/handlerChartData");
 const lodash_1 = __importDefault(require("lodash"));
 const moment_1 = __importDefault(require("moment"));
-const wind_1 = require("@ali/wind");
+const console_components_1 = require("@alicloud/console-components");
 const config = window.ALIYUN_FC_CONSOLE_CONFIG || {};
 //映射qulifer是ALL的指标名称字段
 exports.mapTargetTOALL = {
@@ -51,35 +51,35 @@ exports.mapTargetTOALL = {
     FunctionQualifierDequeueCount: 'FunctionDequeueCount',
 };
 exports.metricLegendListAll = [
-    { metricName: 'RegionTotalInvocations', legendName: wind_intl_1.default('fc.dashboard.success.label'), colorPrimary: '#0881FE', },
-    { metricName: 'RegionServerErrors', legendName: wind_intl_1.default('fc.dashboard.server.error.label'), colorPrimary: '#751616', },
-    { metricName: 'RegionClientErrors', legendName: wind_intl_1.default('fc.dashboard.client.error.label'), colorPrimary: '#E44F2F', },
-    { metricName: 'RegionFunctionErrors', legendName: wind_intl_1.default('fc.dashboard.function.error.label'), colorPrimary: '#E44390', },
-    { metricName: 'ServiceConcurrencyLimit', legendName: wind_intl_1.default('fc.dashboard.concurrent.max.label'), colorPrimary: '#FF7E4F', },
-    { metricName: 'ServiceConcurrentCount', legendName: wind_intl_1.default('fc.dashboard.functionConcurrentCount.lable'), colorPrimary: '#0881FE', },
-    { metricName: 'ServiceConcurrentCount', legendName: wind_intl_1.default('fc.dashboard.function.serviceConcurrentTol'), colorPrimary: '#2BABA8', },
-    { metricName: 'FunctionQualifierTotalInvocations', legendName: wind_intl_1.default('fc.dashboard.allCount.lable'), colorPrimary: '#0881FE', },
-    { metricName: 'FunctionQualifierProvisionInvocations', legendName: wind_intl_1.default('fc.dashboard.singletonCount.lable'), colorPrimary: '#5ad8a6', },
-    { metricName: 'FunctionQualifierServerErrors', legendName: wind_intl_1.default('fc.metrics.legend.service_errors'), colorPrimary: '#751616', },
-    { metricName: 'FunctionQualifierClientErrors', legendName: wind_intl_1.default('fc.metrics.legend.client_errors'), colorPrimary: '#E44F2F', },
-    { metricName: 'FunctionQualifierFunctionErrors', legendName: wind_intl_1.default('fc.metrics.legend.function_errors'), colorPrimary: '#E44390', },
-    { metricName: 'FunctionQualifierConcurrencyThrottles', legendName: wind_intl_1.default('fc.dashboard.traffic.control.concurrent.label'), colorPrimary: '#826AF9', },
-    { metricName: 'FunctionQualifierResourceThrottles', legendName: wind_intl_1.default('fc.dashboard.traffic.control.total.label'), colorPrimary: '#0881FE', },
-    { metricName: 'FunctionQualifierAvgDuration', legendName: wind_intl_1.default('fc.dashboard.functionAvgDuration.lable'), colorPrimary: '#0881FE', },
-    { metricName: 'FunctionQualifierMaxDuration', legendName: wind_intl_1.default('fc.dashboard.functionMaxDuration.lable'), colorPrimary: '#FF7E4F', },
-    { metricName: 'FunctionQualifierLatencyAvg', legendName: wind_intl_1.default('fc.dashboard.functionLatencyAvg.lable'), colorPrimary: '#0881FE', },
-    { metricName: 'FunctionQualifierLatencyMax', legendName: wind_intl_1.default('fc.dashboard.functionLatencyMax.lable'), colorPrimary: '#FF7E4F', },
-    { metricName: 'FunctionQualifierMaxMemoryUsage', legendName: wind_intl_1.default('fc.dashboard.function.memory.max.label'), colorPrimary: '#FF7E4F', },
-    { metricName: 'FunctionQualifierOndemandInstanceQuota', legendName: wind_intl_1.default('fc.dashboard.function.functionProvisionedInstanceCountLimit'), colorPrimary: '#FF7E4F', },
-    { metricName: 'FunctionQualifierOndemandActiveInstance', legendName: wind_intl_1.default('fc.dashboard.function.functionProvisionedInstanceCountCurrent'), colorPrimary: '#2BABA8', },
-    { metricName: 'FunctionQualifierProvisionedCurrentInstance', legendName: wind_intl_1.default('fc.dashboard.function.functionProvisionedCurrentInstanceCount'), colorPrimary: '#2BABA8', },
-    { metricName: 'FunctionTotalActiveInstance', legendName: wind_intl_1.default('fc.dashboard.function.functionProvisionedAlreadyCurrentInstance'), colorPrimary: '#0881FE', },
-    { metricName: 'RegionConcurrencyLimit', legendName: wind_intl_1.default('fc.dashboard.function.regionProvisionedInstanceCountLimit'), colorPrimary: '#FF7E4F', },
-    { metricName: 'RegionConcurrentCount', legendName: wind_intl_1.default('fc.dashboard.function.regionProvisionedInstanceCountCurrent'), colorPrimary: '#2BABA8', },
-    { metricName: 'FunctionQualifierCost', legendName: wind_intl_1.default('fc.dashboard.function.functionUseageInfo'), colorPrimary: '#0881FE', },
-    { metricName: 'FunctionQualifierAsyncEventExpiredDropped', legendName: wind_intl_1.default('fc.dashboard.destination.asyncEventExpiredDropped.label'), colorPrimary: '#E44390', },
-    { metricName: 'FunctionQualifierDestinationErrors', legendName: wind_intl_1.default('fc.dashboard.destination.error.label'), colorPrimary: '#E44F2F', },
-    { metricName: 'FunctionQualifierDestinationSucceeded', legendName: wind_intl_1.default('fc.dashboard.function.destination.succeed.label'), colorPrimary: '#5ad8a6', },
+    { metricName: 'RegionTotalInvocations', legendName: handlerChartData_1.intl('fc.dashboard.success.label'), colorPrimary: '#0881FE', },
+    { metricName: 'RegionServerErrors', legendName: handlerChartData_1.intl('fc.dashboard.server.error.label'), colorPrimary: '#751616', },
+    { metricName: 'RegionClientErrors', legendName: handlerChartData_1.intl('fc.dashboard.client.error.label'), colorPrimary: '#E44F2F', },
+    { metricName: 'RegionFunctionErrors', legendName: handlerChartData_1.intl('fc.dashboard.function.error.label'), colorPrimary: '#E44390', },
+    { metricName: 'ServiceConcurrencyLimit', legendName: handlerChartData_1.intl('fc.dashboard.concurrent.max.label'), colorPrimary: '#FF7E4F', },
+    { metricName: 'ServiceConcurrentCount', legendName: handlerChartData_1.intl('fc.dashboard.functionConcurrentCount.lable'), colorPrimary: '#0881FE', },
+    { metricName: 'ServiceConcurrentCount', legendName: handlerChartData_1.intl('fc.dashboard.function.serviceConcurrentTol'), colorPrimary: '#2BABA8', },
+    { metricName: 'FunctionQualifierTotalInvocations', legendName: handlerChartData_1.intl('fc.dashboard.allCount.lable'), colorPrimary: '#0881FE', },
+    { metricName: 'FunctionQualifierProvisionInvocations', legendName: handlerChartData_1.intl('fc.dashboard.singletonCount.lable'), colorPrimary: '#5ad8a6', },
+    { metricName: 'FunctionQualifierServerErrors', legendName: handlerChartData_1.intl('fc.metrics.legend.service_errors'), colorPrimary: '#751616', },
+    { metricName: 'FunctionQualifierClientErrors', legendName: handlerChartData_1.intl('fc.metrics.legend.client_errors'), colorPrimary: '#E44F2F', },
+    { metricName: 'FunctionQualifierFunctionErrors', legendName: handlerChartData_1.intl('fc.metrics.legend.function_errors'), colorPrimary: '#E44390', },
+    { metricName: 'FunctionQualifierConcurrencyThrottles', legendName: handlerChartData_1.intl('fc.dashboard.traffic.control.concurrent.label'), colorPrimary: '#826AF9', },
+    { metricName: 'FunctionQualifierResourceThrottles', legendName: handlerChartData_1.intl('fc.dashboard.traffic.control.total.label'), colorPrimary: '#0881FE', },
+    { metricName: 'FunctionQualifierAvgDuration', legendName: handlerChartData_1.intl('fc.dashboard.functionAvgDuration.lable'), colorPrimary: '#0881FE', },
+    { metricName: 'FunctionQualifierMaxDuration', legendName: handlerChartData_1.intl('fc.dashboard.functionMaxDuration.lable'), colorPrimary: '#FF7E4F', },
+    { metricName: 'FunctionQualifierLatencyAvg', legendName: handlerChartData_1.intl('fc.dashboard.functionLatencyAvg.lable'), colorPrimary: '#0881FE', },
+    { metricName: 'FunctionQualifierLatencyMax', legendName: handlerChartData_1.intl('fc.dashboard.functionLatencyMax.lable'), colorPrimary: '#FF7E4F', },
+    { metricName: 'FunctionQualifierMaxMemoryUsage', legendName: handlerChartData_1.intl('fc.dashboard.function.memory.max.label'), colorPrimary: '#FF7E4F', },
+    { metricName: 'FunctionQualifierOndemandInstanceQuota', legendName: handlerChartData_1.intl('fc.dashboard.function.functionProvisionedInstanceCountLimit'), colorPrimary: '#FF7E4F', },
+    { metricName: 'FunctionQualifierOndemandActiveInstance', legendName: handlerChartData_1.intl('fc.dashboard.function.functionProvisionedInstanceCountCurrent'), colorPrimary: '#2BABA8', },
+    { metricName: 'FunctionQualifierProvisionedCurrentInstance', legendName: handlerChartData_1.intl('fc.dashboard.function.functionProvisionedCurrentInstanceCount'), colorPrimary: '#2BABA8', },
+    { metricName: 'FunctionTotalActiveInstance', legendName: handlerChartData_1.intl('fc.dashboard.function.functionProvisionedAlreadyCurrentInstance'), colorPrimary: '#0881FE', },
+    { metricName: 'RegionConcurrencyLimit', legendName: handlerChartData_1.intl('fc.dashboard.function.regionProvisionedInstanceCountLimit'), colorPrimary: '#FF7E4F', },
+    { metricName: 'RegionConcurrentCount', legendName: handlerChartData_1.intl('fc.dashboard.function.regionProvisionedInstanceCountCurrent'), colorPrimary: '#2BABA8', },
+    { metricName: 'FunctionQualifierCost', legendName: handlerChartData_1.intl('fc.dashboard.function.functionUseageInfo'), colorPrimary: '#0881FE', },
+    { metricName: 'FunctionQualifierAsyncEventExpiredDropped', legendName: handlerChartData_1.intl('fc.dashboard.destination.asyncEventExpiredDropped.label'), colorPrimary: '#E44390', },
+    { metricName: 'FunctionQualifierDestinationErrors', legendName: handlerChartData_1.intl('fc.dashboard.destination.error.label'), colorPrimary: '#E44F2F', },
+    { metricName: 'FunctionQualifierDestinationSucceeded', legendName: handlerChartData_1.intl('fc.dashboard.function.destination.succeed.label'), colorPrimary: '#5ad8a6', },
 ];
 function getMetricName(key) {
     const findArr = exports.metricLegendListAll.filter((item) => item.metricName === key);
@@ -234,7 +234,7 @@ function TableColStyle(value, contentWidth, contentWidthNumber) {
         overflow: 'hidden',
         cursor: 'pointer',
     };
-    const Tooltip = wind_1.Balloon.Tooltip;
+    const Tooltip = console_components_1.Balloon.Tooltip;
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("div", { style: { float: 'left', width: '35%', height: '20px', textAlign: 'left' } },
             react_1.default.createElement(Tooltip, { trigger: react_1.default.createElement("div", { style: ballonFont }, value), align: 'l' }, value)),
@@ -271,7 +271,7 @@ function formatDuration(ms) {
     Object.keys(time).forEach((key, index) => {
         if (time[key] > 0 || found) {
             if (index !== length - 1 || time[key] > 0) {
-                filtered.push(`${time[key]} ${wind_intl_1.default(`time.diff.uinit.${key}${time[key] > 1 ? 's' : ''}`)}`);
+                filtered.push(`${time[key]} ${handlerChartData_1.intl(`time.diff.uinit.${key}${time[key] > 1 ? 's' : ''}`)}`);
             }
             if (time[key] > 0 && !found) {
                 found = true;
@@ -322,23 +322,23 @@ function isEnLanguage() {
 exports.isEnLanguage = isEnLanguage;
 function getEchartColor(key) {
     const chartsClors = [
-        { name: wind_intl_1.default('fc.dashboard.success.label'), value: '#0881FE' },
-        { name: wind_intl_1.default('fc.dashboard.server.error.label'), value: '#751616' },
-        { name: wind_intl_1.default('fc.dashboard.function.error.label'), value: '#E44F2F' },
-        { name: wind_intl_1.default('fc.dashboard.client.error.label'), value: '#E44390' },
-        { name: wind_intl_1.default('fc.dashboard.traffic.control.concurrent.label'), value: '#826AF9' },
-        { name: wind_intl_1.default('fc.dashboard.traffic.control.total.label'), value: '#0881FE' },
-        { name: wind_intl_1.default('fc.dashboard.concurrent.count.label'), value: '#FF7E4F' },
-        { name: wind_intl_1.default('fc.dashboard.concurrent.max.label'), value: '#2BABA8' },
-        { name: wind_intl_1.default('fc.dashboard.function.error.title'), value: '#0881FE' },
-        { name: wind_intl_1.default('fc.dashboard.exec.time.avg.label'), value: '#0881FE' },
-        { name: wind_intl_1.default('fc.dashboard.exec.time.max.label'), value: '#751616' },
-        { name: wind_intl_1.default('fc.dashboard.exec.time.latency.avg.label'), value: '#E44F2F' },
-        { name: wind_intl_1.default('fc.dashboard.exec.time.latency.max.label'), value: '#E44390' },
-        { name: wind_intl_1.default('fc.dashboard.function.memory.max.label'), value: '#FF7E4F' },
-        { name: wind_intl_1.default('fc.dashboard.function.destination.succeed.label'), value: '#2BABA8' },
-        { name: wind_intl_1.default('fc.dashboard.destination.error.label'), value: '#FF7E4F' },
-        { name: wind_intl_1.default('fc.dashboard.destination.asyncEventExpiredDropped.label'), value: '#E44F2F' },
+        { name: handlerChartData_1.intl('fc.dashboard.success.label'), value: '#0881FE' },
+        { name: handlerChartData_1.intl('fc.dashboard.server.error.label'), value: '#751616' },
+        { name: handlerChartData_1.intl('fc.dashboard.function.error.label'), value: '#E44F2F' },
+        { name: handlerChartData_1.intl('fc.dashboard.client.error.label'), value: '#E44390' },
+        { name: handlerChartData_1.intl('fc.dashboard.traffic.control.concurrent.label'), value: '#826AF9' },
+        { name: handlerChartData_1.intl('fc.dashboard.traffic.control.total.label'), value: '#0881FE' },
+        { name: handlerChartData_1.intl('fc.dashboard.concurrent.count.label'), value: '#FF7E4F' },
+        { name: handlerChartData_1.intl('fc.dashboard.concurrent.max.label'), value: '#2BABA8' },
+        { name: handlerChartData_1.intl('fc.dashboard.function.error.title'), value: '#0881FE' },
+        { name: handlerChartData_1.intl('fc.dashboard.exec.time.avg.label'), value: '#0881FE' },
+        { name: handlerChartData_1.intl('fc.dashboard.exec.time.max.label'), value: '#751616' },
+        { name: handlerChartData_1.intl('fc.dashboard.exec.time.latency.avg.label'), value: '#E44F2F' },
+        { name: handlerChartData_1.intl('fc.dashboard.exec.time.latency.max.label'), value: '#E44390' },
+        { name: handlerChartData_1.intl('fc.dashboard.function.memory.max.label'), value: '#FF7E4F' },
+        { name: handlerChartData_1.intl('fc.dashboard.function.destination.succeed.label'), value: '#2BABA8' },
+        { name: handlerChartData_1.intl('fc.dashboard.destination.error.label'), value: '#FF7E4F' },
+        { name: handlerChartData_1.intl('fc.dashboard.destination.asyncEventExpiredDropped.label'), value: '#E44F2F' },
     ];
     const findObj = lodash_1.default.find(chartsClors, (item) => item.name === key) || { name: '', value: '0070CC' };
     return findObj.value || '0070CC';
@@ -509,8 +509,8 @@ exports.chartsColors = chartsColors;
 exports.funFunctionItem = [
     {
         id: '1',
-        name: wind_intl_1.default('fc.dashboard.success.label'),
-        value: wind_intl_1.default('fc.dashboard.success.label'),
+        name: handlerChartData_1.intl('fc.dashboard.success.label'),
+        value: handlerChartData_1.intl('fc.dashboard.success.label'),
         marker: {
             symbol: 'square',
             style: { fill: '#0881FE' },
@@ -518,8 +518,8 @@ exports.funFunctionItem = [
     },
     {
         id: '2',
-        name: wind_intl_1.default('fc.dashboard.server.error.label'),
-        value: wind_intl_1.default('fc.dashboard.server.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.server.error.label'),
+        value: handlerChartData_1.intl('fc.dashboard.server.error.label'),
         marker: {
             symbol: 'square',
             style: { fill: '#751616' },
@@ -527,8 +527,8 @@ exports.funFunctionItem = [
     },
     {
         id: '3',
-        name: wind_intl_1.default('fc.dashboard.client.error.label'),
-        value: wind_intl_1.default('fc.dashboard.client.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.client.error.label'),
+        value: handlerChartData_1.intl('fc.dashboard.client.error.label'),
         marker: {
             symbol: 'square',
             style: { fill: '#E44F2F' },
@@ -536,8 +536,8 @@ exports.funFunctionItem = [
     },
     {
         id: '4',
-        name: wind_intl_1.default('fc.dashboard.function.error.label'),
-        value: wind_intl_1.default('fc.dashboard.function.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.function.error.label'),
+        value: handlerChartData_1.intl('fc.dashboard.function.error.label'),
         marker: {
             symbol: 'square',
             style: { fill: '#E44390' },
@@ -546,73 +546,73 @@ exports.funFunctionItem = [
 ];
 exports.specErrorFunctionLegendList = [
     {
-        name: wind_intl_1.default('fc.dashboard.server.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.server.error.label'),
         colorPrimary: '#751616',
     },
     {
-        name: wind_intl_1.default('fc.dashboard.client.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.client.error.label'),
         colorPrimary: '#E44F2F',
     },
     {
-        name: wind_intl_1.default('fc.dashboard.function.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.function.error.label'),
         colorPrimary: '#E44390',
     },
 ];
 exports.specConcurrentRealLegendList = [
     {
-        name: wind_intl_1.default('fc.dashboard.concurrent.max.label'),
+        name: handlerChartData_1.intl('fc.dashboard.concurrent.max.label'),
         colorPrimary: '#FF7E4F',
     },
     {
-        name: wind_intl_1.default('fc.dashboard.functionConcurrentCount.lable'),
+        name: handlerChartData_1.intl('fc.dashboard.functionConcurrentCount.lable'),
         colorPrimary: '#2BABA8',
     },
 ];
 exports.specUtilizationLegendList = [
     {
-        name: wind_intl_1.default('fc.dashboard.function.functionProvisionedInstanceUtilization'),
+        name: handlerChartData_1.intl('fc.dashboard.function.functionProvisionedInstanceUtilization'),
         colorPrimary: '#0881FE',
     },
 ];
 exports.metricsServiceLegendList = [
     {
-        name: wind_intl_1.default('fc.dashboard.server.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.server.error.label'),
         colorPrimary: '#751616',
     },
     {
-        name: wind_intl_1.default('fc.dashboard.client.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.client.error.label'),
         colorPrimary: '#E44F2F',
     },
     {
-        name: wind_intl_1.default('fc.metrics.legend.total_invocathions'),
+        name: handlerChartData_1.intl('fc.metrics.legend.total_invocathions'),
         colorPrimary: '#0881FE',
     },
 ];
 exports.metricsServicerRatesLegendList = [
     {
-        name: wind_intl_1.default('fc.metrics.rate.service_errors'),
+        name: handlerChartData_1.intl('fc.metrics.rate.service_errors'),
         colorPrimary: '#751616',
     },
     {
-        name: wind_intl_1.default('fc.metrics.rate.clent_errors'),
+        name: handlerChartData_1.intl('fc.metrics.rate.clent_errors'),
         colorPrimary: '#E44F2F',
     },
     {
-        name: wind_intl_1.default('fc.metrics.legend.total_invocathions'),
+        name: handlerChartData_1.intl('fc.metrics.legend.total_invocathions'),
         colorPrimary: '#0881FE',
     },
 ];
 exports.metricsfunFunctionLegendList = [
     {
-        name: wind_intl_1.default('fc.dashboard.server.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.server.error.label'),
         colorPrimary: '#751616',
     },
     {
-        name: wind_intl_1.default('fc.dashboard.client.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.client.error.label'),
         colorPrimary: '#E44F2F',
     },
     {
-        name: wind_intl_1.default('fc.metrics.legend.total_invocathions'),
+        name: handlerChartData_1.intl('fc.metrics.legend.total_invocathions'),
         colorPrimary: '#0881FE',
     },
 ];
@@ -675,19 +675,19 @@ function publicComputeUnit(val, num = 1000, unit = -1, initUnit) {
 exports.publicComputeUnit = publicComputeUnit;
 exports.funcFunctionLegendList = [
     {
-        name: wind_intl_1.default('fc.dashboard.success.label'),
+        name: handlerChartData_1.intl('fc.dashboard.success.label'),
         colorPrimary: '#0881FE',
     },
     {
-        name: wind_intl_1.default('fc.dashboard.server.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.server.error.label'),
         colorPrimary: '#751616',
     },
     {
-        name: wind_intl_1.default('fc.dashboard.function.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.function.error.label'),
         colorPrimary: '#E44F2F',
     },
     {
-        name: wind_intl_1.default('fc.dashboard.client.error.label'),
+        name: handlerChartData_1.intl('fc.dashboard.client.error.label'),
         colorPrimary: '#E44390',
     },
 ];

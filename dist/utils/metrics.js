@@ -20,6 +20,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@serverless-devs/core");
 const constant_1 = require("../constant");
@@ -367,7 +368,7 @@ class Metrics {
 }
 __decorate([
     core_1.HLogger(constant_1.CONTEXT),
-    __metadata("design:type", Object)
+    __metadata("design:type", typeof (_a = typeof core_1.ILogger !== "undefined" && core_1.ILogger) === "function" ? _a : Object)
 ], Metrics.prototype, "logger", void 0);
 exports.default = Metrics;
 //# sourceMappingURL=metrics.js.map

@@ -21,3 +21,7 @@ code {
 .border {
   border: 1px solid rgba(187, 187, 187, 100);
 }
+
+.windcc-page__content-main .header{
+  margin-bottom: 20px;
+}

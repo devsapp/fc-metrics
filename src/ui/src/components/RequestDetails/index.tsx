@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Loading } from "@ali/wind";
+import { Loading } from "@alicloud/console-components";
 import { isEmpty } from 'lodash';
 import { UserContext } from '../../context';
 import { getRequestInfo, getTraceData } from '../../request';
+
 import CardInfo from './CardInfo';
 import FuncCallLine from './FuncCallLine';
 import { queryStringSearch, getTableData } from '../LineChart/Chart/helper';
@@ -39,7 +40,7 @@ export default () => {
 
     async function getTrace(params) {
         setTimeLineDataLoading(true)
-       //  const getRequestTimeLineData = staticMockdataNew;
+        //const getRequestTimeLineData = staticMockdataNew;
         const getRequestTimeLineData = await getTraceData(params);;
         const { data } = getRequestTimeLineData || {};
         const dataSource = getTableData(data);
@@ -58,7 +59,7 @@ export default () => {
         <div>
             <Loading
                 visible={requestLoading}
-                style={{ width: '100%', height: '400', padding: '10px' }}
+                style={{ width: '100%', height: '400' }}
             >
                 <CardInfo
                     requestCardData={requestCardData}

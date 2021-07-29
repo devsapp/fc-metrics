@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Grid } from "@ali/wind";
-import intl from '@ali/wind-intl';
+import { Card, Grid } from "@alicloud/console-components";
+import { intl } from '../../utils/handlerChartData';
 import './index.scoped.less';
 
 

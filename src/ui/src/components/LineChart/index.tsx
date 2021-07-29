@@ -1,13 +1,7 @@
 import React, { useState, useEffect, Fragment, useContext } from 'react';
 import { isEmpty } from 'lodash';
 import { Grid, Card } from '@alicloud/console-components';
-// import {
-//   FunctionTotalInvocations,
-//   FunctionProvisionInvocations,
-//   FunctionServerErrors,
-//   FunctionClientErrors,
-// } from '../../constants';
-import intl from '@ali/wind-intl';
+import { intl } from '../../utils/handlerChartData';
 import { UserContext } from '../../context';
 import LineChart from './Chart/index';
 import { ISFUNCMETRICSACTIVE, isEnLanguage, SIZEROW1, SIZEROW2, WIDTH95, WIDTH164, WIDTH144, WIDTH200, WIDTH210, WIDTH100 } from './Chart/helper';
@@ -155,7 +149,7 @@ export default () => {
     const regionConcurrencMetrics = [...regionConcurrencyLimitData, ...regionConcurrentCountData];
     setReginConcurrencMetricsLoading(false);
     setRegionConcurrencMetrics(regionConcurrencMetrics);
-    
+
     // 资源利用率
     const functionQualifierCostData = await getMetricData({ ...config, metric: 'FunctionQualifierCost' });
     setFunctionCostMetricsLoading(false);
@@ -305,83 +299,83 @@ export default () => {
 
 
       <Row style={{ marginBottom: 20 }} gutter={20}>
-          <Col span={8}>
-            <Card contentHeight="auto">
-              <LineChart
-                visible={metricsVisible}
-                title={intl('fc.dashboard.function.functionOndemandInstance')}
-                data={getChartData(funcOndemandMetrics, metricsVisible)}
-                params={config || {}}
-                legendList={funcOndemandNameList}
-                isActive={ISFUNCMETRICSACTIVE}
-                sizePerRow={SIZEROW1}
-                maxWidth={isEnLanguage() ? WIDTH95 : WIDTH164}
-              />
-            </Card>
-          </Col>
+        <Col span={8}>
+          <Card contentHeight="auto">
+            <LineChart
+              visible={metricsVisible}
+              title={intl('fc.dashboard.function.functionOndemandInstance')}
+              data={getChartData(funcOndemandMetrics, metricsVisible)}
+              params={config || {}}
+              legendList={funcOndemandNameList}
+              isActive={ISFUNCMETRICSACTIVE}
+              sizePerRow={SIZEROW1}
+              maxWidth={isEnLanguage() ? WIDTH95 : WIDTH164}
+            />
+          </Card>
+        </Col>
 
-          <Col span={8}>
-            <Card contentHeight="auto">
-              <LineChart
-                visible={metricsVisible}
-                title={intl('fc.dashboard.function.functionProvisionedInstanceCount')}
-                data={getChartData(funcProvisionedMetrics, metricsVisible)}
-                params={config || {}}
-                legendList={funcProvisionedNameList}
-                isActive={ISFUNCMETRICSACTIVE}
-                sizePerRow={SIZEROW1}
-                maxWidth={isEnLanguage() ? WIDTH95 : WIDTH144}
-              />
-            </Card>
-          </Col>
+        <Col span={8}>
+          <Card contentHeight="auto">
+            <LineChart
+              visible={metricsVisible}
+              title={intl('fc.dashboard.function.functionProvisionedInstanceCount')}
+              data={getChartData(funcProvisionedMetrics, metricsVisible)}
+              params={config || {}}
+              legendList={funcProvisionedNameList}
+              isActive={ISFUNCMETRICSACTIVE}
+              sizePerRow={SIZEROW1}
+              maxWidth={isEnLanguage() ? WIDTH95 : WIDTH144}
+            />
+          </Card>
+        </Col>
 
-          <Col span={8}>
-            <Card contentHeight="auto">
-              <LineChart
-                visible={metricsVisible}
-                title={intl('fc.dashboard.function.regionOndemandInstance')}
-                data={getChartData(regionConcurrencMetrics, metricsVisible)}
-                params={config || {}}
-                legendList={reginConcurrencyNameList}
-                isActive={ISFUNCMETRICSACTIVE}
-                sizePerRow={SIZEROW1}
-                maxWidth={isEnLanguage() ? WIDTH95 : WIDTH164}
-              />
-            </Card>
-          </Col>
-        </Row>
+        <Col span={8}>
+          <Card contentHeight="auto">
+            <LineChart
+              visible={metricsVisible}
+              title={intl('fc.dashboard.function.regionOndemandInstance')}
+              data={getChartData(regionConcurrencMetrics, metricsVisible)}
+              params={config || {}}
+              legendList={reginConcurrencyNameList}
+              isActive={ISFUNCMETRICSACTIVE}
+              sizePerRow={SIZEROW1}
+              maxWidth={isEnLanguage() ? WIDTH95 : WIDTH164}
+            />
+          </Card>
+        </Col>
+      </Row>
 
       <Row style={{ marginBottom: 20 }} gutter={20}>
-          <Col span={8}>
-            <Card contentHeight="auto">
-              <LineChart
-                visible={metricsVisible}
-                title={intl('fc.dashboard.function.functionUsage')}
-                data={getChartData(functionCostMetrics, metricsVisible)}
-                params={config || {}}
-                legendList={functionCostNameList}
-                isActive={ISFUNCMETRICSACTIVE}
-                sizePerRow={SIZEROW1}
-                maxWidth={WIDTH100}
-              />
-            </Card>
-          </Col>
+        <Col span={8}>
+          <Card contentHeight="auto">
+            <LineChart
+              visible={metricsVisible}
+              title={intl('fc.dashboard.function.functionUsage')}
+              data={getChartData(functionCostMetrics, metricsVisible)}
+              params={config || {}}
+              legendList={functionCostNameList}
+              isActive={ISFUNCMETRICSACTIVE}
+              sizePerRow={SIZEROW1}
+              maxWidth={WIDTH100}
+            />
+          </Card>
+        </Col>
 
-          <Col span={8}>
-            <Card contentHeight="auto">
-              <LineChart
-                visible={metricsVisible}
-                title={intl('fc.dashboard.function.asyncEvent.label')}
-                data={getChartData(destinationMetrics, metricsVisible)}
-                params={config || {}}
-                legendList={destinationNameList}
-                isActive={ISFUNCMETRICSACTIVE}
-                sizePerRow={SIZEROW2}
-                maxWidth={WIDTH200}
-              />
-            </Card>
-          </Col>
-        </Row>
+        <Col span={8}>
+          <Card contentHeight="auto">
+            <LineChart
+              visible={metricsVisible}
+              title={intl('fc.dashboard.function.asyncEvent.label')}
+              data={getChartData(destinationMetrics, metricsVisible)}
+              params={config || {}}
+              legendList={destinationNameList}
+              isActive={ISFUNCMETRICSACTIVE}
+              sizePerRow={SIZEROW2}
+              maxWidth={WIDTH200}
+            />
+          </Card>
+        </Col>
+      </Row>
 
     </Fragment>
   );

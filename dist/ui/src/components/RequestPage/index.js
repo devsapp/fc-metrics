@@ -23,20 +23,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const wind_rc_page_1 = __importDefault(require("@ali/wind-rc-page"));
+const console_components_page_1 = __importDefault(require("@alicloud/console-components-page"));
+const react_router_dom_1 = require("react-router-dom");
 const index_1 = __importDefault(require("../RequestDetails/index"));
 require("../RequestDetails/index.scoped.less");
 class RequestInfo extends react_1.Component {
     render() {
-        const historyBack = {
-            pathname: `/`,
-            state: {},
-            search: ``,
-        };
-        return (react_1.default.createElement(wind_rc_page_1.default, null,
-            react_1.default.createElement(wind_rc_page_1.default.Nav, null),
-            react_1.default.createElement(wind_rc_page_1.default.Title, { historyBack: historyBack, text: react_1.default.createElement("span", null, "\u8FD4\u56DE"), childrenAlign: "right" }),
-            react_1.default.createElement(wind_rc_page_1.default.Content, null,
+        return (react_1.default.createElement(console_components_page_1.default, null,
+            react_1.default.createElement(console_components_page_1.default.Content, null,
+                react_1.default.createElement(react_router_dom_1.Link, { style: { fontSize: '14px' }, to: '/' },
+                    " ",
+                    `<-- 返回`),
                 react_1.default.createElement(index_1.default, null))));
     }
 }

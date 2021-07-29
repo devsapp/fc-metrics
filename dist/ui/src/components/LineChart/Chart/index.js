@@ -25,10 +25,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const bizcharts_1 = require("bizcharts");
 const lodash_1 = __importDefault(require("lodash"));
-const wind_1 = require("@ali/wind");
+const console_components_1 = require("@alicloud/console-components");
 const moment_1 = __importDefault(require("moment"));
 const helper_1 = require("./helper");
-const { Row, Col } = wind_1.Grid;
+const { Row, Col } = console_components_1.Grid;
 class LineChart extends react_1.Component {
     constructor(props) {
         super(props);
@@ -133,7 +133,7 @@ class LineChart extends react_1.Component {
                 return moment_1.default(text).format("MM-DD HH:mm");
             },
         };
-        return (react_1.default.createElement(wind_1.Loading, { visible: visible, className: helper_1.isEnLanguage() ? 'functionChartWraperEngLish' : 'functionChartWraperChinese', style: { width: '100%', height: visible ? 230 : 230 } },
+        return (react_1.default.createElement(console_components_1.Loading, { visible: visible, className: helper_1.isEnLanguage() ? 'functionChartWraperEngLish' : 'functionChartWraperChinese', style: { width: '100%', height: visible ? 230 : 230 } },
             react_1.default.createElement("div", { style: { fontSize: 14, fontWeight: 'bold' } },
                 " ",
                 title,

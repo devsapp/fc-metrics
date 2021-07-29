@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handlerData = void 0;
+exports.intl = exports.handlerData = void 0;
+const messages_1 = __importDefault(require("../locales/messages"));
 const moment = require('moment');
 const keepDecimal = (value) => Math.floor(value * 100) / 100;
 // 云监控处理时间的前置数据
@@ -63,4 +67,8 @@ function handlerData(resultPromissList = [], metricNameList = [], params) {
     return chartData;
 }
 exports.handlerData = handlerData;
+function intl(str) {
+    return messages_1.default[str];
+}
+exports.intl = intl;
 //# sourceMappingURL=handlerChartData.js.map

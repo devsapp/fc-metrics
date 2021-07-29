@@ -32,7 +32,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const wind_1 = require("@ali/wind");
+const console_components_1 = require("@alicloud/console-components");
 const lodash_1 = require("lodash");
 const context_1 = require("../../context");
 const request_1 = require("../../request");
@@ -73,7 +73,7 @@ exports.default = () => {
     function getTrace(params) {
         return __awaiter(this, void 0, void 0, function* () {
             setTimeLineDataLoading(true);
-            //  const getRequestTimeLineData = staticMockdataNew;
+            //const getRequestTimeLineData = staticMockdataNew;
             const getRequestTimeLineData = yield request_1.getTraceData(params);
             ;
             const { data } = getRequestTimeLineData || {};
@@ -90,7 +90,7 @@ exports.default = () => {
     const searchParamsObj = helper_1.queryStringSearch(location.search);
     const { startTime, endTime, qualifier } = searchParamsObj;
     return (react_1.default.createElement("div", null,
-        react_1.default.createElement(wind_1.Loading, { visible: requestLoading, style: { width: '100%', height: '400', padding: '10px' } },
+        react_1.default.createElement(console_components_1.Loading, { visible: requestLoading, style: { width: '100%', height: '400' } },
             react_1.default.createElement(CardInfo_1.default, { requestCardData: requestCardData }),
             react_1.default.createElement(FuncCallLine_1.default, { getDataFlag: getDataFlag, timeLineDataLoading: timeLineDataLoading, timeLineData: timeLineData, startTime: startTime, endTime: endTime, qualifier: qualifier, regionId: 'cn-shanghai' }))));
 };

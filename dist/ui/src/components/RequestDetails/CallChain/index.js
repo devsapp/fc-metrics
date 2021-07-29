@@ -25,10 +25,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Detail = void 0;
 // eslint react/prefer-stateless-function: "off"
 const react_1 = __importStar(require("react"));
-const wind_1 = require("@ali/wind");
-const midfe_tree_grid_1 = __importDefault(require("@ali/midfe-tree-grid"));
+const console_components_1 = require("@alicloud/console-components");
+const TreeGrid_1 = __importDefault(require("../utils/TreeGrid"));
 const dc = __importStar(require("../utils/dataConvert"));
-const wind_intl_1 = __importDefault(require("@ali/wind-intl"));
+const handlerChartData_1 = require("../../../utils/handlerChartData");
 class Detail extends react_1.Component {
     goto(item, ServiceName) {
         const requestInfoStr = sessionStorage.getItem('requestInfo');
@@ -99,11 +99,11 @@ class Detail extends react_1.Component {
 exports.Detail = Detail;
 const expandOn = {
     field: 'rpc',
-    displayName: wind_intl_1.default('fc.dashboard.requset.span'),
+    displayName: handlerChartData_1.intl('fc.dashboard.requset.span'),
     style: { width: 500 },
     render(row) {
         return (react_1.default.createElement("div", { className: "inner", style: { whiteSpace: 'normal', wordBreak: 'break-all' } },
-            react_1.default.createElement(wind_1.Balloon, { triggerType: "hover", trigger: react_1.default.createElement("span", { className: "hover-span" }, row.OperationName), align: "rb", closable: false, popupStyle: { padding: 10, maxWidth: 420 } },
+            react_1.default.createElement(console_components_1.Balloon, { triggerType: "hover", trigger: react_1.default.createElement("span", { className: "hover-span" }, row.OperationName), align: "rb", closable: false, popupStyle: { padding: 10, maxWidth: 420 } },
                 react_1.default.createElement(Detail, { data: row }))));
     },
 };
@@ -111,7 +111,7 @@ const expandOn = {
 const columns = [
     {
         field: 'span',
-        displayName: wind_intl_1.default('fc.dashboard.requset.timeaxios'),
+        displayName: handlerChartData_1.intl('fc.dashboard.requset.timeaxios'),
         style: { width: '500px', borderTop: 'none', borderBottom: 'none' },
         render(row) {
             //需要根据数据计算后重写
@@ -119,7 +119,7 @@ const columns = [
     },
     {
         field: 'ServiceName',
-        displayName: wind_intl_1.default('fc.dashboard.requset.application'),
+        displayName: handlerChartData_1.intl('fc.dashboard.requset.application'),
         style: { width: '200px', position: 'relative' },
         render(row) {
             return react_1.default.createElement("div", { className: "inner" }, row.ServiceName);
@@ -127,7 +127,7 @@ const columns = [
     },
     {
         field: 'Timestamp',
-        displayName: wind_intl_1.default('fc.dashboard.requset.logAppearTimes'),
+        displayName: handlerChartData_1.intl('fc.dashboard.requset.logAppearTimes'),
         style: { width: '150px' },
         render(row) {
             return react_1.default.createElement("div", { className: "inner" }, dc.dateFormat(row.Timestamp));
@@ -135,7 +135,7 @@ const columns = [
     },
     {
         field: 'ServiceIp',
-        displayName: wind_intl_1.default('fc.dashboard.requset.ipAddress'),
+        displayName: handlerChartData_1.intl('fc.dashboard.requset.ipAddress'),
         style: { width: '90px' },
         render(row) {
             return react_1.default.createElement("div", { className: "inner" }, row.ServiceIp);
@@ -143,7 +143,7 @@ const columns = [
     },
     {
         field: 'ResultCode',
-        displayName: wind_intl_1.default('fc.dashboard.requset.status'),
+        displayName: handlerChartData_1.intl('fc.dashboard.requset.status'),
         style: { width: '54px' },
         render(row) {
             let className = 'trace-status ';
@@ -194,13 +194,13 @@ function logTimeCreater(min, max, duration) {
                 (row.Timestamp + '').length === 13 ? row.Duration : row.Duration / 1000,
                 "ms")));
         return (react_1.default.createElement("div", { className: "log-time" },
-            react_1.default.createElement(wind_1.Balloon, { trigger: Timestamp, align: "r", closable: false },
+            react_1.default.createElement(console_components_1.Balloon, { trigger: Timestamp, align: "r", closable: false },
                 react_1.default.createElement("div", { className: "text-left" },
-                    wind_intl_1.default('fc.log.basic.invoke.time'),
+                    handlerChartData_1.intl('fc.log.basic.invoke.time'),
                     dc.dateFormat(row.Timestamp, 'YYYY-MM-DD HH:mm:s.SSS'),
                     " ",
                     react_1.default.createElement("br", null),
-                    wind_intl_1.default('fc.dashboard.requset.wasteTimes'),
+                    handlerChartData_1.intl('fc.dashboard.requset.wasteTimes'),
                     (row.Timestamp + '').length === 13 ? row.Duration : row.Duration / 1000,
                     "ms"))));
     };
@@ -227,8 +227,8 @@ class CallChain extends react_1.Component {
     render() {
         const { tree, loading } = this.state;
         console.log('tree', tree);
-        return (react_1.default.createElement("div", { className: "next-table" }, tree.length === 0 && !loading ? (react_1.default.createElement("div", { className: "call-chain-nodata" }, wind_intl_1.default('fc.applications.rds.import_tpye.import.rds.null'))) : (react_1.default.createElement("div", null,
-            react_1.default.createElement(midfe_tree_grid_1.default, { data: tree, expandOn: expandOn, columns: columns })))));
+        return (react_1.default.createElement("div", { className: "next-table" }, tree.length === 0 && !loading ? (react_1.default.createElement("div", { className: "call-chain-nodata" }, handlerChartData_1.intl('fc.applications.rds.import_tpye.import.rds.null'))) : (react_1.default.createElement("div", null,
+            react_1.default.createElement(TreeGrid_1.default, { data: tree, expandOn: expandOn, columns: columns })))));
     }
 }
 CallChain.propTypes = {};

@@ -34,13 +34,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 const lodash_1 = require("lodash");
 const console_components_1 = require("@alicloud/console-components");
-// import {
-//   FunctionTotalInvocations,
-//   FunctionProvisionInvocations,
-//   FunctionServerErrors,
-//   FunctionClientErrors,
-// } from '../../constants';
-const wind_intl_1 = __importDefault(require("@ali/wind-intl"));
+const handlerChartData_1 = require("../../utils/handlerChartData");
 const context_1 = require("../../context");
 const index_1 = __importDefault(require("./Chart/index"));
 const helper_1 = require("./Chart/helper");
@@ -49,50 +43,50 @@ require("./index.css");
 const { Row, Col } = console_components_1.Grid;
 exports.default = () => {
     const functionCallsNameList = [
-        { metricName: 'FunctionQualifierTotalInvocations', legendName: wind_intl_1.default('fc.dashboard.allCount.lable'), colorPrimary: '#0881FE' },
-        { metricName: 'FunctionQualifierProvisionInvocations', legendName: wind_intl_1.default('fc.dashboard.singletonCount.lable'), colorPrimary: 'rgb(90 216 166)' },
+        { metricName: 'FunctionQualifierTotalInvocations', legendName: handlerChartData_1.intl('fc.dashboard.allCount.lable'), colorPrimary: '#0881FE' },
+        { metricName: 'FunctionQualifierProvisionInvocations', legendName: handlerChartData_1.intl('fc.dashboard.singletonCount.lable'), colorPrimary: 'rgb(90 216 166)' },
     ];
     const functionErrorNameList = [
-        { metricName: 'FunctionQualifierServerErrors', legendName: wind_intl_1.default('fc.metrics.legend.service_errors'), colorPrimary: '#751616' },
-        { metricName: 'FunctionQualifierClientErrors', legendName: wind_intl_1.default('fc.metrics.legend.client_errors'), colorPrimary: '#E44F2F' },
-        { metricName: 'FunctionQualifierFunctionErrors', legendName: wind_intl_1.default('fc.metrics.legend.function_errors'), colorPrimary: '#E44390' },
+        { metricName: 'FunctionQualifierServerErrors', legendName: handlerChartData_1.intl('fc.metrics.legend.service_errors'), colorPrimary: '#751616' },
+        { metricName: 'FunctionQualifierClientErrors', legendName: handlerChartData_1.intl('fc.metrics.legend.client_errors'), colorPrimary: '#E44F2F' },
+        { metricName: 'FunctionQualifierFunctionErrors', legendName: handlerChartData_1.intl('fc.metrics.legend.function_errors'), colorPrimary: '#E44390' },
     ];
     const flowControlNameLIst = [
-        { metricName: 'FunctionQualifierConcurrencyThrottles', legendName: wind_intl_1.default('fc.dashboard.traffic.control.concurrent.label'), colorPrimary: '#826AF9' },
-        { metricName: 'FunctionQualifierResourceThrottles', legendName: wind_intl_1.default('fc.dashboard.traffic.control.total.label'), colorPrimary: '#0881FE' },
+        { metricName: 'FunctionQualifierConcurrencyThrottles', legendName: handlerChartData_1.intl('fc.dashboard.traffic.control.concurrent.label'), colorPrimary: '#826AF9' },
+        { metricName: 'FunctionQualifierResourceThrottles', legendName: handlerChartData_1.intl('fc.dashboard.traffic.control.total.label'), colorPrimary: '#0881FE' },
     ];
     const timeDuationNameLIst = [
-        { metricName: 'FunctionQualifierAvgDuration', legendName: wind_intl_1.default('fc.dashboard.functionAvgDuration.lable'), colorPrimary: '#0881FE' },
-        { metricName: 'FunctionQualifierMaxDuration', legendName: wind_intl_1.default('fc.dashboard.functionMaxDuration.lable'), colorPrimary: '#FF7E4F' },
+        { metricName: 'FunctionQualifierAvgDuration', legendName: handlerChartData_1.intl('fc.dashboard.functionAvgDuration.lable'), colorPrimary: '#0881FE' },
+        { metricName: 'FunctionQualifierMaxDuration', legendName: handlerChartData_1.intl('fc.dashboard.functionMaxDuration.lable'), colorPrimary: '#FF7E4F' },
     ];
     const n2nDuationNameLIst = [
-        { metricName: 'FunctionQualifierLatencyAvg', legendName: wind_intl_1.default('fc.dashboard.functionLatencyAvg.lable'), colorPrimary: '#0881FE' },
-        { metricName: 'FunctionQualifierLatencyMax', legendName: wind_intl_1.default('fc.dashboard.functionLatencyMax.lable'), colorPrimary: '#FF7E4F' },
+        { metricName: 'FunctionQualifierLatencyAvg', legendName: handlerChartData_1.intl('fc.dashboard.functionLatencyAvg.lable'), colorPrimary: '#0881FE' },
+        { metricName: 'FunctionQualifierLatencyMax', legendName: handlerChartData_1.intl('fc.dashboard.functionLatencyMax.lable'), colorPrimary: '#FF7E4F' },
     ];
     const memoryUsageNameList = [
-        { metricName: 'FunctionQualifierMaxMemoryUsage', legendName: wind_intl_1.default('fc.dashboard.function.memory.max.label'), colorPrimary: '#FF7E4F' },
+        { metricName: 'FunctionQualifierMaxMemoryUsage', legendName: handlerChartData_1.intl('fc.dashboard.function.memory.max.label'), colorPrimary: '#FF7E4F' },
     ];
     //函数按量实例数(个)
     const funcOndemandNameList = [
-        { metricName: 'FunctionQualifierOndemandInstanceQuota', legendName: wind_intl_1.default('fc.dashboard.function.functionProvisionedInstanceCountLimit'), colorPrimary: '#FF7E4F', },
-        { metricName: 'FunctionQualifierOndemandActiveInstance', legendName: wind_intl_1.default('fc.dashboard.function.functionProvisionedInstanceCountCurrent'), colorPrimary: '#2BABA8', },
+        { metricName: 'FunctionQualifierOndemandInstanceQuota', legendName: handlerChartData_1.intl('fc.dashboard.function.functionProvisionedInstanceCountLimit'), colorPrimary: '#FF7E4F', },
+        { metricName: 'FunctionQualifierOndemandActiveInstance', legendName: handlerChartData_1.intl('fc.dashboard.function.functionProvisionedInstanceCountCurrent'), colorPrimary: '#2BABA8', },
     ];
     //函数预留实例数(个)
     const funcProvisionedNameList = [
-        { metricName: 'FunctionQualifierProvisionedCurrentInstance', legendName: wind_intl_1.default('fc.dashboard.function.functionProvisionedCurrentInstanceCount'), colorPrimary: '#2BABA8', },
+        { metricName: 'FunctionQualifierProvisionedCurrentInstance', legendName: handlerChartData_1.intl('fc.dashboard.function.functionProvisionedCurrentInstanceCount'), colorPrimary: '#2BABA8', },
     ];
     //区域按量实例数(个)
     const reginConcurrencyNameList = [
-        { metricName: 'RegionConcurrencyLimit', legendName: wind_intl_1.default('fc.dashboard.function.regionProvisionedInstanceCountLimit'), colorPrimary: '#FF7E4F', },
-        { metricName: 'RegionConcurrentCount', legendName: wind_intl_1.default('fc.dashboard.function.regionProvisionedInstanceCountCurrent'), colorPrimary: '#2BABA8', },
+        { metricName: 'RegionConcurrencyLimit', legendName: handlerChartData_1.intl('fc.dashboard.function.regionProvisionedInstanceCountLimit'), colorPrimary: '#FF7E4F', },
+        { metricName: 'RegionConcurrentCount', legendName: handlerChartData_1.intl('fc.dashboard.function.regionProvisionedInstanceCountCurrent'), colorPrimary: '#2BABA8', },
     ];
     const functionCostNameList = [
-        { metricName: 'FunctionQualifierCost', legendName: wind_intl_1.default('fc.dashboard.function.functionUseageInfo'), colorPrimary: '#0881FE' },
+        { metricName: 'FunctionQualifierCost', legendName: handlerChartData_1.intl('fc.dashboard.function.functionUseageInfo'), colorPrimary: '#0881FE' },
     ];
     const destinationNameList = [
-        { metricName: 'FunctionQualifierAsyncEventExpiredDropped', legendName: wind_intl_1.default('fc.dashboard.destination.asyncEventExpiredDropped.label'), colorPrimary: '#E44390' },
-        { metricName: 'FunctionQualifierDestinationErrors', legendName: wind_intl_1.default('fc.dashboard.destination.error.label'), colorPrimary: '#E44F2F' },
-        { metricName: 'FunctionQualifierDestinationSucceeded', legendName: wind_intl_1.default('fc.dashboard.function.destination.succeed.label'), colorPrimary: 'rgb(90 216 166)' },
+        { metricName: 'FunctionQualifierAsyncEventExpiredDropped', legendName: handlerChartData_1.intl('fc.dashboard.destination.asyncEventExpiredDropped.label'), colorPrimary: '#E44390' },
+        { metricName: 'FunctionQualifierDestinationErrors', legendName: handlerChartData_1.intl('fc.dashboard.destination.error.label'), colorPrimary: '#E44F2F' },
+        { metricName: 'FunctionQualifierDestinationSucceeded', legendName: handlerChartData_1.intl('fc.dashboard.function.destination.succeed.label'), colorPrimary: 'rgb(90 216 166)' },
     ];
     const { config } = react_1.useContext(context_1.UserContext);
     const [functionCallMetricLoading, setFunctionCallMetricLoading] = react_1.useState(false);
@@ -223,39 +217,39 @@ exports.default = () => {
         react_1.default.createElement(Row, { className: "marginBottom20" },
             react_1.default.createElement(Col, { span: 8, style: { paddingRight: '15px' } },
                 react_1.default.createElement(console_components_1.Card, { contentHeight: "auto" },
-                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: wind_intl_1.default('fc.dashboard.functionCallCount.lable'), data: getChartData(functionCallsMetrics, metricsVisible), params: config || {}, legendList: functionCallsNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.isEnLanguage() ? helper_1.WIDTH164 : helper_1.WIDTH144 }))),
+                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: handlerChartData_1.intl('fc.dashboard.functionCallCount.lable'), data: getChartData(functionCallsMetrics, metricsVisible), params: config || {}, legendList: functionCallsNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.isEnLanguage() ? helper_1.WIDTH164 : helper_1.WIDTH144 }))),
             react_1.default.createElement(Col, { span: 8, style: { paddingRight: '15px' } },
                 react_1.default.createElement(console_components_1.Card, { contentHeight: "auto" },
-                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: wind_intl_1.default('fc.dashboard.functionErrocCount.lable'), data: getChartData(functionErrors, metricsVisible), params: config || {}, legendList: functionErrorNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW2, maxWidth: helper_1.WIDTH210 }))),
+                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: handlerChartData_1.intl('fc.dashboard.functionErrocCount.lable'), data: getChartData(functionErrors, metricsVisible), params: config || {}, legendList: functionErrorNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW2, maxWidth: helper_1.WIDTH210 }))),
             react_1.default.createElement(Col, { span: 8, style: { paddingRight: '15px' } },
                 react_1.default.createElement(console_components_1.Card, { contentHeight: "auto" },
-                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: wind_intl_1.default('fc.dashboard.flowControlCount.lable'), data: getChartData(flowControlMetrics, metricsVisible), params: config || {}, legendList: flowControlNameLIst, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.isEnLanguage() ? helper_1.WIDTH164 : helper_1.WIDTH144 })))),
+                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: handlerChartData_1.intl('fc.dashboard.flowControlCount.lable'), data: getChartData(flowControlMetrics, metricsVisible), params: config || {}, legendList: flowControlNameLIst, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.isEnLanguage() ? helper_1.WIDTH164 : helper_1.WIDTH144 })))),
         react_1.default.createElement(Row, { className: "marginBottom20" },
             react_1.default.createElement(Col, { span: 8, style: { paddingRight: '15px' } },
                 react_1.default.createElement(console_components_1.Card, { contentHeight: "auto" },
-                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: `${wind_intl_1.default('fc.dashboard.function.execution.time')}(ms)`, data: getChartData(timeDurationMetrics, metricsVisible), params: config || {}, legendList: timeDuationNameLIst, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.WIDTH95 }))),
+                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: `${handlerChartData_1.intl('fc.dashboard.function.execution.time')}(ms)`, data: getChartData(timeDurationMetrics, metricsVisible), params: config || {}, legendList: timeDuationNameLIst, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.WIDTH95 }))),
             react_1.default.createElement(Col, { span: 8, style: { paddingRight: '15px' } },
                 react_1.default.createElement(console_components_1.Card, { contentHeight: "auto" },
-                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: wind_intl_1.default('fc.dashboard.n2nduction.lable'), data: getChartData(n2nDurationMetrics, metricsVisible), params: config || {}, legendList: n2nDuationNameLIst, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.WIDTH95 }))),
+                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: handlerChartData_1.intl('fc.dashboard.n2nduction.lable'), data: getChartData(n2nDurationMetrics, metricsVisible), params: config || {}, legendList: n2nDuationNameLIst, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.WIDTH95 }))),
             react_1.default.createElement(Col, { span: 8, style: { paddingRight: '15px' } },
                 react_1.default.createElement(console_components_1.Card, { contentHeight: "auto" },
-                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: `${wind_intl_1.default('fc.dashboard.function.memory.title')}(MB)`, data: getChartData(memoryMetrics, metricsVisible), params: config || {}, legendList: memoryUsageNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.WIDTH95 })))),
+                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: `${handlerChartData_1.intl('fc.dashboard.function.memory.title')}(MB)`, data: getChartData(memoryMetrics, metricsVisible), params: config || {}, legendList: memoryUsageNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.WIDTH95 })))),
         react_1.default.createElement(Row, { style: { marginBottom: 20 }, gutter: 20 },
             react_1.default.createElement(Col, { span: 8 },
                 react_1.default.createElement(console_components_1.Card, { contentHeight: "auto" },
-                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: wind_intl_1.default('fc.dashboard.function.functionOndemandInstance'), data: getChartData(funcOndemandMetrics, metricsVisible), params: config || {}, legendList: funcOndemandNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.isEnLanguage() ? helper_1.WIDTH95 : helper_1.WIDTH164 }))),
+                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: handlerChartData_1.intl('fc.dashboard.function.functionOndemandInstance'), data: getChartData(funcOndemandMetrics, metricsVisible), params: config || {}, legendList: funcOndemandNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.isEnLanguage() ? helper_1.WIDTH95 : helper_1.WIDTH164 }))),
             react_1.default.createElement(Col, { span: 8 },
                 react_1.default.createElement(console_components_1.Card, { contentHeight: "auto" },
-                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: wind_intl_1.default('fc.dashboard.function.functionProvisionedInstanceCount'), data: getChartData(funcProvisionedMetrics, metricsVisible), params: config || {}, legendList: funcProvisionedNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.isEnLanguage() ? helper_1.WIDTH95 : helper_1.WIDTH144 }))),
+                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: handlerChartData_1.intl('fc.dashboard.function.functionProvisionedInstanceCount'), data: getChartData(funcProvisionedMetrics, metricsVisible), params: config || {}, legendList: funcProvisionedNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.isEnLanguage() ? helper_1.WIDTH95 : helper_1.WIDTH144 }))),
             react_1.default.createElement(Col, { span: 8 },
                 react_1.default.createElement(console_components_1.Card, { contentHeight: "auto" },
-                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: wind_intl_1.default('fc.dashboard.function.regionOndemandInstance'), data: getChartData(regionConcurrencMetrics, metricsVisible), params: config || {}, legendList: reginConcurrencyNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.isEnLanguage() ? helper_1.WIDTH95 : helper_1.WIDTH164 })))),
+                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: handlerChartData_1.intl('fc.dashboard.function.regionOndemandInstance'), data: getChartData(regionConcurrencMetrics, metricsVisible), params: config || {}, legendList: reginConcurrencyNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.isEnLanguage() ? helper_1.WIDTH95 : helper_1.WIDTH164 })))),
         react_1.default.createElement(Row, { style: { marginBottom: 20 }, gutter: 20 },
             react_1.default.createElement(Col, { span: 8 },
                 react_1.default.createElement(console_components_1.Card, { contentHeight: "auto" },
-                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: wind_intl_1.default('fc.dashboard.function.functionUsage'), data: getChartData(functionCostMetrics, metricsVisible), params: config || {}, legendList: functionCostNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.WIDTH100 }))),
+                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: handlerChartData_1.intl('fc.dashboard.function.functionUsage'), data: getChartData(functionCostMetrics, metricsVisible), params: config || {}, legendList: functionCostNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW1, maxWidth: helper_1.WIDTH100 }))),
             react_1.default.createElement(Col, { span: 8 },
                 react_1.default.createElement(console_components_1.Card, { contentHeight: "auto" },
-                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: wind_intl_1.default('fc.dashboard.function.asyncEvent.label'), data: getChartData(destinationMetrics, metricsVisible), params: config || {}, legendList: destinationNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW2, maxWidth: helper_1.WIDTH200 }))))));
+                    react_1.default.createElement(index_1.default, { visible: metricsVisible, title: handlerChartData_1.intl('fc.dashboard.function.asyncEvent.label'), data: getChartData(destinationMetrics, metricsVisible), params: config || {}, legendList: destinationNameList, isActive: helper_1.ISFUNCMETRICSACTIVE, sizePerRow: helper_1.SIZEROW2, maxWidth: helper_1.WIDTH200 }))))));
 };
 //# sourceMappingURL=index.js.map

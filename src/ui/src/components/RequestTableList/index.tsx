@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Icon, Grid, Table } from '@ali/wind';
-import intl from '@ali/wind-intl';
-import Link from '@ali/wind-rc-link';
+import { Icon, Grid, Table } from '@alicloud/console-components';
+import { Link } from 'react-router-dom';
+import { intl } from '../../utils/handlerChartData';
 import { isEmpty } from 'lodash';
 import { UserContext } from '../../context';
 import { getRequestTableList } from '../../request';
@@ -39,7 +39,7 @@ export default () => {
             return (
                 <span>
                     <Icon type="check" size="small" style={{ color: "#0BB27B" }} />
-                    <label style={{ marginLeft: 8, verticalAlign: 'middle' }}>{intl.html('fc.dashboard.success')}</label>
+                    <label style={{ marginLeft: 8, verticalAlign: 'middle' }}>{intl('fc.dashboard.success')}</label>
                 </span>
             )
         } else {
@@ -150,10 +150,10 @@ export default () => {
                         <div className={'applyLogWraper'}>
                             <h2 style={{ paddingTop: '20px' }}>{'推荐您开通RequestMetrics以便查询函数级别指标'}</h2>
                             <div style={{ textAlign: 'center' }}>
-                                <div style={{ paddingBottom: '20px', fontSize:'14px' }}>
+                                <div style={{ paddingBottom: '20px', fontSize: '14px' }}>
                                     <a href='https://fc.console.aliyun.com/'> 去往FC控制台服务及函数下的服务配置进行开通，或者联系函数计算团队 </a>
                                 </div>
-                                <img width={'85%%'} style={{margin:'0 auto'}} src="https://fc-dashboard.oss-cn-hangzhou.aliyuncs.com/images/icon/functionLog.png" />
+                                <img width={'85%%'} style={{ margin: '0 auto' }} src="https://fc-dashboard.oss-cn-hangzhou.aliyuncs.com/images/icon/functionLog.png" />
                             </div>
                         </div>
                     )

@@ -17,6 +17,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@serverless-devs/core");
 const constant_1 = require("../constant");
@@ -78,7 +79,7 @@ class StartService {
 }
 __decorate([
     core_1.HLogger(constant_1.CONTEXT),
-    __metadata("design:type", Object)
+    __metadata("design:type", typeof (_a = typeof core_1.ILogger !== "undefined" && core_1.ILogger) === "function" ? _a : Object)
 ], StartService.prototype, "logger", void 0);
 exports.default = StartService;
 //# sourceMappingURL=services.js.map

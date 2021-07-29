@@ -1,8 +1,8 @@
 import React from 'react';
-import intl from '@ali/wind-intl';
+import { intl } from '../../../utils/handlerChartData';
 import _ from 'lodash';
 import moment from 'moment';
-import { Balloon } from "@ali/wind";
+import { Balloon } from "@alicloud/console-components";
 
 
 const config = window.ALIYUN_FC_CONSOLE_CONFIG || {};

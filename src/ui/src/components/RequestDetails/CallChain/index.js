@@ -1,9 +1,9 @@
 // eslint react/prefer-stateless-function: "off"
 import React, { Component, Fragment } from 'react';
-import { Loading, Balloon, Button } from '@ali/wind';
-import TreeGrid from '@ali/midfe-tree-grid';
+import { Loading, Balloon, Button } from '@alicloud/console-components';
+import TreeGrid from '../utils/TreeGrid';
 import * as dc from '../utils/dataConvert';
-import intl from '@ali/wind-intl';
+import { intl } from '../../../utils/handlerChartData';
 
 export class Detail extends Component {
   goto(item, ServiceName) {

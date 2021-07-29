@@ -24,7 +24,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
 const react_dom_1 = require("react-dom");
-require("./initializer");
 const app_1 = __importDefault(require("./app"));
 require("./index.css");
 require("@alicloud/console-components/dist/wind.css");
