@@ -11,7 +11,6 @@ const bodyParser = require('body-parser');
 export default class Metrics {
   @HLogger(CONTEXT) logger: ILogger;
   logClient: any;
-  fcClient: any;
   cmsClient: any;
   buildSLSClient: any;
   getTraceClicnt: any;
@@ -22,6 +21,7 @@ export default class Metrics {
   region: string;
   serviceName: string;
   functionName: string;
+  protected credentials: ICredentials;
   constructor(properties: IProperties, credentials: ICredentials) {
     this.requestOption = requestOption;
     this.accountId = credentials.AccountID;
@@ -30,7 +30,7 @@ export default class Metrics {
     this.region = properties.region;
     this.serviceName = properties.serviceName;
     this.functionName = properties.functionName;
-    this.fcClient = getFcClient(credentials, properties.region);
+    this.credentials = credentials;
     this.cmsClient = getCmsClient(credentials);
     this.buildSLSClient = getSLSClient(credentials, properties.region);
     this.getTraceClicnt = getTraceClicnt(credentials, properties.region);
@@ -38,13 +38,14 @@ export default class Metrics {
 
   async getService(tableParams) {
     const { serviceName, qualifier } = tableParams || {};
+    const fcClient = await getFcClient(this.credentials, this.region)
     try {
       this.logger.debug('Get: fcClient 入参', serviceName, qualifier);
-      var service = await this.fcClient.getService(serviceName, {}, qualifier);
+      var service = await fcClient.getService(serviceName, {}, qualifier);
       return service.data.logConfig
     } catch (e) {
       this.logger.debug("Fail: An error occured when get service", serviceName, qualifier)
-      var service = await this.fcClient.getService(serviceName, {}, qualifier);
+      var service = await fcClient.getService(serviceName, {}, qualifier);
       return service.data.logConfig
     }
   }
