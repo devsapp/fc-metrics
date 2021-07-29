@@ -38,7 +38,7 @@ class Metrics {
         this.region = properties.region;
         this.serviceName = properties.serviceName;
         this.functionName = properties.functionName;
-        this.fcClient = client_1.getFcClient(credentials, properties.region);
+        this.credentials = credentials;
         this.cmsClient = client_1.getCmsClient(credentials);
         this.buildSLSClient = client_1.getSLSClient(credentials, properties.region);
         this.getTraceClicnt = client_1.getTraceClicnt(credentials, properties.region);
@@ -46,14 +46,15 @@ class Metrics {
     getService(tableParams) {
         return __awaiter(this, void 0, void 0, function* () {
             const { serviceName, qualifier } = tableParams || {};
+            const fcClient = yield client_1.getFcClient(this.credentials, this.region);
             try {
                 this.logger.debug('Get: fcClient 入参', serviceName, qualifier);
-                var service = yield this.fcClient.getService(serviceName, {}, qualifier);
+                var service = yield fcClient.getService(serviceName, {}, qualifier);
                 return service.data.logConfig;
             }
             catch (e) {
                 this.logger.debug("Fail: An error occured when get service", serviceName, qualifier);
-                var service = yield this.fcClient.getService(serviceName, {}, qualifier);
+                var service = yield fcClient.getService(serviceName, {}, qualifier);
                 return service.data.logConfig;
             }
         });

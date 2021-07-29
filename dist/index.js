@@ -75,7 +75,7 @@ class MetricsComponent {
     //查询当前函数是否合法，合法后才可以进行组件查询
     getFunction(credentials, region, serviceName, functionName) {
         return __awaiter(this, void 0, void 0, function* () {
-            const fcClient = client_1.getFcClient(credentials, region);
+            const fcClient = yield client_1.getFcClient(credentials, region);
             return yield fcClient.getFunction(serviceName, functionName).then(res => {
                 if (res && res.data) {
                     this.logger.debug(`Get yml或者command入参:${serviceName},${functionName}`);

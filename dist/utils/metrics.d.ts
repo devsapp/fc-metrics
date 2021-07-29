@@ -3,7 +3,6 @@ import { IProperties, ICredentials } from '../interface';
 export default class Metrics {
     logger: ILogger;
     logClient: any;
-    fcClient: any;
     cmsClient: any;
     buildSLSClient: any;
     getTraceClicnt: any;
@@ -14,6 +13,7 @@ export default class Metrics {
     region: string;
     serviceName: string;
     functionName: string;
+    protected credentials: ICredentials;
     constructor(properties: IProperties, credentials: ICredentials);
     getService(tableParams: any): Promise<any>;
     describeFunctionInsights(params: any): Promise<unknown>;
