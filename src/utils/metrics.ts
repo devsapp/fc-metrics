@@ -7,6 +7,7 @@ import StartService from './services';
 import { getCmsClient, getFcClient, getSLSClient, getTraceClicnt } from './client';
 
 const bodyParser = require('body-parser');
+const isNcc = path.basename(__dirname) === 'dist';
 
 export default class Metrics {
   @HLogger(CONTEXT) logger: ILogger;
@@ -229,7 +230,7 @@ export default class Metrics {
   }
 
   async start() {
-    const uri = path.join(__dirname, 'static')
+    const uri = isNcc ? path.join(__dirname, 'utils', 'static') : path.join(__dirname, 'static');
     this.logger.debug(`Get File path: ${JSON.stringify(uri)}`);
     const that: any = this;
     function callback(app) {
@@ -364,7 +365,12 @@ export default class Metrics {
 
       app.get('/', (req, res) => {
         res.header('Content-Type', 'text/html;charset=utf-8');
-        res.sendFile(path.join(__dirname, '../../dist/static'));
+        // 按照之前的逻辑，并没有找到相关的路径，求解
+        let filePath = path.join(__dirname, '..', 'static');
+        if (isNcc) {
+          filePath = path.join(__dirname, 'static');
+        }
+        res.sendFile(filePath);
       });
     }
 
