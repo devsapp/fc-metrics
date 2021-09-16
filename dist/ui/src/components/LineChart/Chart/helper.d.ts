@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 export declare const mapTargetTOALL: {
     ServiceQualifierTotalInvocations: string;
     ServiceQualifierServerErrors: string;
@@ -176,7 +176,7 @@ export declare function getTableData(timeLineData: any): {
     data?: {
         children?: {} | [];
         Duration: number;
-        Timestamp: string | number;
+        Timestamp: React.Key;
         id: string;
     };
 };
@@ -184,7 +184,7 @@ export declare function transTableInfo(originArr: any, rootEle: any): {
     data?: {
         children?: {} | [];
         Duration: number;
-        Timestamp: string | number;
+        Timestamp: React.Key;
         id: string;
     };
 };
