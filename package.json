@@ -2,6 +2,7 @@
   "name": "fc-metrics",
   "version": "0.1.6",
   "main": "./dist/index.js",
+  "autoInstall": false,
   "dependencies": {
     "@alicloud/fc2": "^2.2.2",
     "@alicloud/log": "^1.1.0",
@@ -28,20 +29,18 @@
     "ts-jest": "^26.2.0",
     "ts-loader": "^8.0.14",
     "typescript": "^3.9.7",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^4.4.0"
+    "@vercel/ncc": "^0.24.0"
   },
   "scripts": {
     "dev": "npx tsc -w -p tsconfig.json",
-    "prebuild": "rimraf dist",
-    "build:ts": "npm run build && npx tsc -p tsconfig.json",
-    "build:component": "npx webpack --mode=production",
     "test": "jest",
     "test:cov": "jest --coverage",
     "lint": "f2elint scan",
     "fix": "f2elint fix",
     "typecheck": "npx tsc -p tsconfig.json --noEmit",
-    "build": "./src/script/build.sh"
+    "prebuild": "npm i rimraf --no-save && rimraf package-lock.json && rimraf dist && rimraf node_modules && npm i",
+    "build": "npm run fix && npm run lint && ncc build src/index.ts -m -e @serverless-devs/core -o dist",
+    "postbuild": "./src/script/build.sh"
   },
   "husky": {
     "hooks": {
