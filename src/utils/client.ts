@@ -1,8 +1,8 @@
 import * as core from '@serverless-devs/core';
+import Core from '@alicloud/pop-core';
+import FC from '@alicloud/fc2';
+import ALY from 'aliyun-sdk';
 import { ICredentials } from '../interface';
-const Core = require('@alicloud/pop-core');
-const FC = require('@alicloud/fc2');
-const ALY = require('aliyun-sdk');
 
 async function getFcEndpoint(): Promise<string | undefined> {
   const fcDefault = await core.loadComponent('devsapp/fc-default');
@@ -33,12 +33,11 @@ export const getCmsClient = (credentials: ICredentials) => {
 };
 
 export const getSLSClient = (credentials: ICredentials, region: string) => {
-
   return new ALY.SLS({
     accessKeyId: credentials.AccessKeyID,
     secretAccessKey: credentials.AccessKeySecret,
-    endpoint: "http://" + region + ".log.aliyuncs.com",
-    apiVersion: '2015-06-01'
+    endpoint: `http://${ region }.log.aliyuncs.com`,
+    apiVersion: '2015-06-01',
   });
 };
 
@@ -46,11 +45,8 @@ export const getTraceClicnt = (credentials: ICredentials, region: string) => {
   return new Core({
     accessKeyId: credentials.AccessKeyID,
     accessKeySecret: credentials.AccessKeySecret,
-    endpoint: 'https://xtrace.' + region + '.aliyuncs.com',
-    apiVersion: '2019-08-08'
+    endpoint: `https://xtrace.${ region }.aliyuncs.com`,
+    apiVersion: '2019-08-08',
   });
 };
-
-
-
 

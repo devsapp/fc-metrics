@@ -2,7 +2,7 @@
 
 echo '编译静态页面'
 cd ./src/ui
-npm run build
+npm i && npm run build
 
 cd ../
 echo '清除缓存'

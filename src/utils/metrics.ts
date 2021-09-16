@@ -2,11 +2,11 @@ import { HLogger, ILogger } from '@serverless-devs/core';
 import { CONTEXT, requestOption, openBrowser, apiNamespace } from '../constant';
 import { IProperties, ICredentials } from '../interface';
 import path from 'path';
+import bodyParser from 'body-parser';
 import express from 'express';
 import StartService from './services';
 import { getCmsClient, getFcClient, getSLSClient, getTraceClicnt } from './client';
 
-const bodyParser = require('body-parser');
 const isNcc = path.basename(__dirname) === 'dist';
 
 export default class Metrics {
@@ -39,97 +39,94 @@ export default class Metrics {
 
   async getService(tableParams) {
     const { serviceName, qualifier } = tableParams || {};
-    const fcClient = await getFcClient(this.credentials, this.region)
+    const fcClient = await getFcClient(this.credentials, this.region);
     try {
       this.logger.debug('Get: fcClient 入参', serviceName, qualifier);
-      var service = await fcClient.getService(serviceName, {}, qualifier);
-      return service.data.logConfig
+      const service = await fcClient.getService(serviceName, {}, qualifier);
+      return service.data.logConfig;
     } catch (e) {
-      this.logger.debug("Fail: An error occured when get service", serviceName, qualifier)
-      var service = await fcClient.getService(serviceName, {}, qualifier);
-      return service.data.logConfig
+      this.logger.debug('Fail: An error occured when get service', serviceName, qualifier);
+      const service = await fcClient.getService(serviceName, {}, qualifier);
+      return service.data.logConfig;
     }
   }
 
   async describeFunctionInsights(params) {
-    var logConfig = await this.getService(params);
-    if (!logConfig["enableRequestMetrics"]) {
-      var errResp = {
-        "statusCode": "400",
-        "errorCode": "RequestMetricsNotEnable",
-        "errorMessage": "Please enable requestMetrics and try again."
-      }
-      return errResp
+    const logConfig = await this.getService(params);
+    if (!logConfig.enableRequestMetrics) {
+      const errResp = {
+        statusCode: '400',
+        errorCode: 'RequestMetricsNotEnable',
+        errorMessage: 'Please enable requestMetrics and try again.',
+      };
+      return errResp;
     }
 
-    var client = this.buildSLSClient;
+    const client = this.buildSLSClient;
 
-    var topic = "FCRequestMetrics:" + params["serviceName"] + "/" + params["functionName"]
+    const topic = `FCRequestMetrics:${ params.serviceName }/${ params.functionName}`;
 
-    var opt = {
-      "projectName": logConfig["project"],
-      "logStoreName": logConfig["logstore"],
-      "topic": topic,
-      "from": params["startTime"].substr(0, params["startTime"].length - 3),
-      "to": params["endTime"].substr(0, params["endTime"].length - 3),
-      "reverse": true
+    const opt: any = {
+      projectName: logConfig.project,
+      logStoreName: logConfig.logstore,
+      topic,
+      from: params.startTime.substr(0, params.startTime.length - 3),
+      to: params.endTime.substr(0, params.endTime.length - 3),
+      reverse: true,
     };
 
-    if (params["qualifier"]) {
-      opt["query"] = params["qualifier"]
+    if (params.qualifier) {
+      opt.query = params.qualifier;
     }
 
     return new Promise((resolve, reject) => {
-      client.getLogs(opt, function (err, data) {
+      client.getLogs(opt, (err, data) => {
         if (err) {
-          reject(err)
+          reject(err);
         }
         if (data) {
-          var logsCnt = data["headers"]["x-log-count"]
-          var resp = new Array()
-          for (var i = logsCnt - 1; i >= 0; i--) {
-            resp.push(data["body"][i])
+          const logsCnt = data.headers['x-log-count'];
+          const resp = [];
+          for (let i = logsCnt - 1; i >= 0; i--) {
+            resp.push(data.body[i]);
           }
-          resolve(resp)
+          resolve(resp);
         } else {
           resolve([]);
         }
-      }
-      )
+      });
     });
-
   }
 
-  //请求详情卡片数据
+  // 请求详情卡片数据
   async describeRequestInsights(params) {
-    var logConfig = await this.getService(params);
-    var client = this.buildSLSClient;
-    var topic = "FCRequestMetrics:" + params["serviceName"] + "/" + params["functionName"]
+    const logConfig = await this.getService(params);
+    const client = this.buildSLSClient;
+    const topic = `FCRequestMetrics:${ params.serviceName }/${ params.functionName}`;
 
-    var opt = {
-      "projectName": logConfig["project"],
-      "logStoreName": logConfig["logstore"],
-      "topic": topic,
-      "from": params["startTime"].substr(0, params["startTime"].length - 3),
-      "to": params["endTime"].substr(0, params["endTime"].length - 3),
-      "query": params["requestId"]
+    const opt = {
+      projectName: logConfig.project,
+      logStoreName: logConfig.logstore,
+      topic,
+      from: params.startTime.substr(0, params.startTime.length - 3),
+      to: params.endTime.substr(0, params.endTime.length - 3),
+      query: params.requestId,
     };
 
     return new Promise((resolve, reject) => {
-      client.getLogs(opt, function (err, data) {
+      client.getLogs(opt, (err, data) => {
         if (err) {
-          reject(err)
+          reject(err);
         }
-        var logsCnt = data["headers"]["x-log-count"]
-        var resp = new Array()
+        const logsCnt = data.headers['x-log-count'];
+        const resp = [];
 
-        for (var i = logsCnt - 1; i >= 0; i--) {
-          resp.push(data["body"][i])
+        for (let i = logsCnt - 1; i >= 0; i--) {
+          resp.push(data.body[i]);
         }
-        resolve(resp)
-      }
-      )
-    })
+        resolve(resp);
+      });
+    });
   }
 
   async fetchMetrics(data) {
@@ -152,43 +149,42 @@ export default class Metrics {
     };
 
     return await this.cmsClient.request('DescribeMetricList', params, { method: 'POST' }).then((result) => {
-      return result.Datapoints && JSON.parse(result.Datapoints) || null;
+      return (result.Datapoints && JSON.parse(result.Datapoints)) || null;
     }).catch((e) => {
       this.logger.debug(`Fail: 获取metrics,${metric}图表出错,Api params: ${JSON.stringify(params)},错误信息:${e}`);
     });
   }
 
-  //获取请求详情的调用链路
+  // 获取请求详情的调用链路
   async fetchTrace(data) {
     const { regionId, traceId } = data;
     const args = {
-      "RegionId": regionId,
-      "TraceID": traceId
+      RegionId: regionId,
+      TraceID: traceId,
     };
-    const requestOption = {
+
+    return await this.getTraceClicnt.request('GetTrace', args, {
       method: 'POST',
-    };
-    return await this.getTraceClicnt.request('GetTrace', args, requestOption).then((result) => {
+    }).then((result) => {
       const res = {
-        "data": result,
-        "success": true,
-        "errorMsg": ''
-      }
+        data: result,
+        success: true,
+        errorMsg: '',
+      };
       return res;
     }, (ex) => {
       const res = {
-        "data": ex,
-        "success": false,
-        "errorMsg": ex.name + ': ' + ex.message,
-        "errorStack": ex.stack
-      }
+        data: ex,
+        success: false,
+        errorMsg: `${ex.name }: ${ ex.message}`,
+        errorStack: ex.stack,
+      };
       return res;
-    })
+    });
   }
 
 
-
-  //获取函数列表
+  // 获取函数列表
   async fetchTableList(data) {
     const { startTime, endTime, qualifier } = data;
     const tableListParams = {
@@ -200,15 +196,13 @@ export default class Metrics {
       qualifier,
     };
 
-    return await this.describeFunctionInsights(tableListParams).then(function (data) {
-      return data;
-    }).catch((e) => {
-      this.logger.error(`Fail: An error occurred when describeFunctionInsights`, e);
+    return await this.describeFunctionInsights(tableListParams).then((d) => d).catch((e) => {
+      this.logger.error('Fail: An error occurred when describeFunctionInsights', e);
       return e;
     });
   }
 
-  //获取request 信息
+  // 获取request 信息
   async fetchRequestInfo(data) {
     const { startTime, endTime, qualifier, requestId } = data;
     const requestParams = {
@@ -221,10 +215,8 @@ export default class Metrics {
       requestId,
     };
 
-    return await this.describeRequestInsights(requestParams).then(function (data) {
-      return data;
-    }).catch((e) => {
-      this.logger.error(`Fail: An error occurred when describeRequestInsights`, e);
+    return await this.describeRequestInsights(requestParams).then((d) => d).catch((e) => {
+      this.logger.error('Fail: An error occurred when describeRequestInsights', e);
       return e;
     });
   }
@@ -232,13 +224,14 @@ export default class Metrics {
   async start() {
     const uri = isNcc ? path.join(__dirname, 'utils', 'static') : path.join(__dirname, 'static');
     this.logger.debug(`Get File path: ${JSON.stringify(uri)}`);
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const that: any = this;
     function callback(app) {
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({ extended: true }));
-      app.use(express.static(path.join(uri)))
+      app.use(express.static(path.join(uri)));
       // 设置跨域访问
-      app.all('*', (req, res, next) => {
+      app.all('*', (_req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', 'X-Requested-With');
         res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
@@ -258,9 +251,8 @@ export default class Metrics {
           };
           res.send(resp);
         } catch (e) {
-          res.send({ success: false, error: true, message: e.message })
+          res.send({ success: false, error: true, message: e.message });
         }
-
       });
 
       app.post('/get/RequestTableList', async (req, res) => {
@@ -275,9 +267,8 @@ export default class Metrics {
           };
           res.send(resp);
         } catch (e) {
-          res.send({ success: false, error: true, message: e.message })
+          res.send({ success: false, error: true, message: e.message });
         }
-
       });
 
       app.post('/get/RequestInfo', async (req, res) => {
@@ -292,9 +283,8 @@ export default class Metrics {
           };
           res.send(resp);
         } catch (e) {
-          res.send({ success: false, error: true, message: e.message })
+          res.send({ success: false, error: true, message: e.message });
         }
-
       });
 
       app.post('/get/Trace', async (req, res) => {
@@ -309,9 +299,8 @@ export default class Metrics {
           };
           res.send(resp);
         } catch (e) {
-          res.send({ success: false, error: true, message: e.message })
+          res.send({ success: false, error: true, message: e.message });
         }
-
       });
 
       app.post('/get/Logs', async (req, res) => {
@@ -326,12 +315,11 @@ export default class Metrics {
           };
           res.send(resp);
         } catch (e) {
-          res.send({ success: false, error: true, message: e.message })
+          res.send({ success: false, error: true, message: e.message });
         }
-
       });
 
-      app.get('/get/version', async (req, res) => {
+      app.get('/get/version', async (_req, res) => {
         that.logger.debug('Get: /get/version Request start');
         try {
           const list = await that.fcClient.listVersions(that.serviceName);
@@ -342,13 +330,13 @@ export default class Metrics {
           };
           res.send(resp);
         } catch (e) {
-          res.send({ success: false, error: true, message: e.message })
+          res.send({ success: false, error: true, message: e.message });
           that.logger.error(`Fail: /get/version: ${that.serviceName}获取服务版本出错`);
         }
-      })
+      });
 
-      app.get('/get/alias', async (req, res) => {
-        that.logger.debug('Get: /get/alias Request')
+      app.get('/get/alias', async (_req, res) => {
+        that.logger.debug('Get: /get/alias Request');
         try {
           const list = await that.fcClient.listAliases(that.serviceName);
           const resp = {
@@ -358,12 +346,12 @@ export default class Metrics {
           };
           res.send(resp);
         } catch (e) {
-          res.send({ success: false, error: true, message: e.message })
+          res.send({ success: false, error: true, message: e.message });
           that.logger.error(`Fail: /get/alias: ${that.serviceName}获取服务别名出错`);
         }
-      })
+      });
 
-      app.get('/', (req, res) => {
+      app.get('/', (_req, res) => {
         res.header('Content-Type', 'text/html;charset=utf-8');
         // 按照之前的逻辑，并没有找到相关的路径，求解
         let filePath = path.join(__dirname, '..', 'static');

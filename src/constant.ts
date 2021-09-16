@@ -1,8 +1,9 @@
 import { RetrtyOptions } from './interface';
-export const CONTEXT: string = 'FC-METRICS';
-export const openBrowser: boolean = false;
-export const apiNamespace: string = 'acs_fc';
-export const requestOption: string = 'GET';
+
+export const CONTEXT = 'FC-METRICS';
+export const openBrowser = false;
+export const apiNamespace = 'acs_fc';
+export const requestOption = 'GET';
 export const RETRYOPTIONS: RetrtyOptions = {
   retries: 5,
   factor: 2,

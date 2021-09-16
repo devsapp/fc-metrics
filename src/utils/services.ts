@@ -1,8 +1,7 @@
+import express from 'express';
+import { exec } from 'child_process';
 import { HLogger, ILogger } from '@serverless-devs/core';
 import { CONTEXT } from '../constant';
-
-const express = require('express');
-const { exec } = require('child_process');
 
 class StartService {
   /**
@@ -43,16 +42,17 @@ class StartService {
 
       if (this.context.openBrowser) {
         switch (process.platform) {
-          case "darwin":
+          case 'darwin':
             exec(`open ${uri}`);
             break;
-          case "win32":
+          case 'win32':
             exec(`start ${uri}`);
             break;
-          case "linux":
+          case 'linux':
             exec(`xdg-open ${uri}`);
+            break;
           default:
-            exec(`open ${uri}`)
+            exec(`open ${uri}`);
         }
       }
     });

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+test/
+examples/
+src/script/
+src/ui/
+
+**/*.min.js
+**/*-min.js
+**/*.bundle.js
