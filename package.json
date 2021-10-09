@@ -1,6 +1,6 @@
 {
   "name": "fc-metrics",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "main": "./dist/index.js",
   "autoInstall": false,
   "dependencies": {
@@ -38,8 +38,8 @@
     "lint": "f2elint scan",
     "fix": "f2elint fix",
     "typecheck": "npx tsc -p tsconfig.json --noEmit",
-    "prebuild": "npm i rimraf --no-save && rimraf package-lock.json && rimraf dist && rimraf node_modules && npm i && ./src/script/build.sh",
-    "build": "npm run fix && npm run lint && ncc build src/index.ts -m -e @serverless-devs/core -o dist"
+    "prebuild": "npm i rimraf --no-save && rimraf package-lock.json && rimraf dist && rimraf node_modules && npm i && npm run fix && npm run lint",
+    "build": "./src/script/build.sh && ncc build src/index.ts -m -e @serverless-devs/core -o dist"
   },
   "husky": {
     "hooks": {
