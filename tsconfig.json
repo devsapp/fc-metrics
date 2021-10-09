@@ -5,6 +5,6 @@
     "outDir": "dist",
     "resolveJsonModule": true,
   },
-  "exclude": ["node_modules", "test/**.ts", "dist"],
+  "exclude": ["node_modules", "test/**.ts", "dist", "src/ui"],
   "include": ["src/**/*"]
 }
